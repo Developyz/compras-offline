@@ -31,3 +31,7 @@ Se añaden seis pruebas: selección conservadora del total, renglones coherentes
 Resultado local: 99 pruebas aprobadas y análisis sin observaciones. El pipeline Android debe comprobar además el ensamblado con los plugins nuevos. La calidad de OCR, enfoque, rotación, permisos y funcionamiento offline requieren pruebas en el Redmi con tickets reales. No se afirma que esta versión esté instalada ni probada en ese teléfono.
 
 Se mantienen SQLite v4 y el protocolo v2. La actualización del APK sobre la instalación anterior sigue pendiente de una solución de firma y conservación de datos: no desinstalar el APK existente como atajo.
+
+## Ensamblado Android comprobado
+
+GitHub Actions completó correctamente la ejecución [42530958936](https://github.com/Developyz/compras-offline/actions/runs/42530958936): SDK, análisis, 99 pruebas, ensamblado del APK debug ARM64 y verificación de firma. Se confirma la compilación con ambos plugins, no el funcionamiento físico de cámara/OCR ni la compatibilidad de actualización con la firma instalada anteriormente.
