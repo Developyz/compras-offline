@@ -1,3 +1,5 @@
+> Informe de la etapa inicial. La ampliación visual y sus diez pruebas se documentan en [vistas Flutter](vistas-flutter.md).
+
 # Proyectos mínimos — alcance y comprobación
 
 ## Qué se generó

@@ -1,12 +1,14 @@
-# Canasta — proyecto Flutter mínimo
+# Canasta — prototipo Flutter
 
-Base generada con Flutter **3.47.5 / Dart 3.13.4**, con destino Android y una pantalla de bienvenida. No implementa todavía compras, ViewModels, SQLite, cámara, OCR, API ni sincronización.
+Flutter **3.47.5 / Dart 3.13.4**, versión visual 0.2.0+2. Incluye nueve pantallas con datos ficticios: inicio, canasta, captura, revisión, historial, detalle de compra, productos, detalle de producto y estados.
 
-El [prototipo HTML](../prototipo/README.md) sigue siendo la referencia visual completa. Las ocho pantallas y sus estados se trasladarán después a Flutter.
+Cámara destacada en el centro de la navegación y moneda paraguaya ₲ sin decimales. Es posible buscar productos, explorar sus precios, revisar tres escenarios de ticket y recorrer siete estados. Confirmar un ticket solamente abre una demostración; no agrega compras al historial.
+
+No implementa todavía ViewModels de negocio, SQLite, cámara, OCR, API ni sincronización. Funciona sin PC servidora para mostrar el prototipo.
 
 ## Ejecutar en Windows
 
-Desde esta carpeta, con Flutter 3.47.5 y Android SDK preparados:
+Con Flutter y Android SDK preparados, desde esta carpeta:
 
 ```powershell
 flutter pub get
@@ -16,29 +18,25 @@ flutter devices
 flutter run -d <id-del-celular>
 ```
 
-`<id-del-celular>` se reemplaza por el identificador que muestra `flutter devices`. El archivo `.flutter-version` registra el SDK usado; no instala ni selecciona Flutter automáticamente. `pubspec.lock` registra las dependencias realmente resueltas.
+Reemplazar `<id-del-celular>` por el identificador de `flutter devices`. `.flutter-version` registra el SDK; `pubspec.lock` registra las dependencias resueltas. Las herramientas descargan dependencias durante su preparación.
 
-La aplicación no necesita una PC servidora, PostgreSQL ni credenciales para mostrar esta bienvenida. Las herramientas de desarrollo sí descargan dependencias durante su preparación.
+## Organización
 
-## Estructura creada
+- `lib/app/`: tema, idioma español y rutas.
+- `lib/demo/`: ejemplos de presentación, separados de los futuros modelos.
+- `lib/presentation/`: navegación y widgets compartidos.
+- `lib/features/`: pantallas por función.
+- `lib/domain/`, `lib/data/`, `lib/services/`: comentarios de responsabilidades pendientes.
+- `test/widget_test.dart`: diez pruebas de importes, navegación, revisión, filtros, estados y accesibilidad.
 
-- `lib/main.dart`: entrada sin conexiones.
-- `lib/app/canasta_app.dart`: tema y composición visual.
-- `lib/features/inicio/views/bienvenida_view.dart`: bienvenida accesible y desplazable.
-- `lib/domain/`, `lib/data/`, `lib/services/`: responsabilidades pendientes documentadas en cada carpeta.
-- `test/widget_test.dart`: bienvenida y texto ampliado en pantalla pequeña.
-- `android/`: proyecto nativo generado por Flutter. Por eso la ruta completa es `android/android/` desde la raíz del repositorio.
+Se incorporan `flutter_localizations`, `intl` 0.20.3 y `fl_chart` 1.3.0. Riverpod, Drift, Dio y plugins siguen pendientes. El estado local de las pantallas solamente sirve para la demostración.
 
-La base usa solamente Flutter y sus herramientas de pruebas/análisis. Riverpod, Drift, Dio y plugins se incorporarán por etapas; la matriz de candidatos no es el lockfile de esta base.
+## Validación y configuración nativa
 
-## Configuración nativa registrada
+Pasaron análisis, diez pruebas y compilación Dart (`flutter build bundle --debug`). La compilación de APK y la prueba en celular siguen pendientes: el intento de la etapa anterior se detuvo al extraer el NDK por falta de espacio del entorno temporal.
 
-Plantilla generada: AGP 9.1.0, Kotlin 2.4.0, Gradle 9.3.1; valores del SDK Flutter: compile/target 36, mínimo 24, NDK 28.2.13676358. Registrar cualquier ajuste que requiera la compilación nativa.
+La plantilla conserva AGP 9.1.0, Kotlin 2.4.0, Gradle 9.3.1, compile/target 36, mínimo 24 y NDK 28.2.13676358. No hay firma de publicación configurada; release conserva la configuración inicial de desarrollo. El proyecto nativo está en `android/` dentro de esta carpeta.
 
-`local.properties`, cachés, wrappers regenerables por Flutter, claves y APKs no se versionan. Usar `flutter run`/`flutter build apk` para que Flutter prepare su configuración local; no copiar rutas de este entorno Linux a Windows.
+No versionar `local.properties`, cachés, claves ni APKs. Flutter prepara las rutas locales; no copiar rutas Linux a Windows.
 
-No hay firma de publicación configurada. La plantilla release conserva la configuración inicial de desarrollo; esta entrega se comprueba en debug.
-
-El análisis, las dos pruebas y la compilación Dart pasaron. El intento de APK se detuvo por falta de espacio del entorno temporal al extraer el NDK; no hay APK verificado en esta entrega.
-
-Ver [validación de las bases](../docs/validacion-proyectos-base.md) para resultados y límites de las pruebas, y [estructura y etapas](../docs/estructura-y-etapas.md) para los siguientes pasos.
+Ver [vistas, capturas y validación](../docs/vistas-flutter.md), [prototipo HTML](../prototipo/README.md) y [validación de las bases](../docs/validacion-proyectos-base.md).

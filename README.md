@@ -34,14 +34,14 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Ya existen proyectos mínimos en Flutter y Spring Boot. Flutter presenta una bienvenida sin datos reales; Spring Boot arranca sin HTTP ni persistencia. La API y la sincronización siguen sin implementar. Ver [resultados de las bases](docs/validacion-proyectos-base.md).
+Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Ya existen proyectos mínimos en Flutter y Spring Boot. Flutter presenta nueve pantallas navegables con datos ficticios; Spring Boot arranca sin HTTP ni persistencia. La API y la sincronización siguen sin implementar. Ver [resultados de las bases](docs/validacion-proyectos-base.md).
 
 ## Estructura
 
 - `DB/`: scripts iniciales de PostgreSQL y SQLite e instrucciones.
 - `docs/`: decisiones y diseño, incluyendo el borrador de API en `docs/api/`.
 - `prototipo/`: pantallas HTML navegables con datos ficticios y comentarios de implementación pendiente.
-- `android/`: proyecto Flutter mínimo, bienvenida, pruebas y comentarios de capas pendientes.
+- `android/`: prototipo Flutter navegable, pruebas y comentarios de capas pendientes.
 - `server/`: proyecto Spring Boot mínimo con Maven Wrapper, pruebas y paquetes pendientes.
 
 ## Documentación
@@ -50,6 +50,7 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Vistas Flutter y validación visual](docs/vistas-flutter.md)
 - [Validación de proyectos mínimos](docs/validacion-proyectos-base.md)
 - [Registro de versiones consultadas](docs/toolchain/versiones-candidatas.json)
 - [Registro de tickets e imágenes](docs/registro-de-tickets.md)
@@ -64,6 +65,6 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 
 ## Próximas definiciones
 
-Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y trasladar las vistas HTML a Flutter después de revisar los resultados de las bases mínimas. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. La matriz propone Riverpod/Drift/Dio y Spring JDBC/Flyway; no representa aún dependencias instaladas o compatibilidad conjunta probada. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y definir los modelos y reglas después de revisar las vistas Flutter. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. La matriz propone Riverpod/Drift/Dio y Spring JDBC/Flyway; no representa aún dependencias instaladas o compatibilidad conjunta probada. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.
