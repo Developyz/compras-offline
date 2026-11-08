@@ -1,5 +1,8 @@
 # Herramientas y versiones — propuesta para preparación
 
+**Actualización de ejecución:** las bases mínimas ya se generaron y se prepararon Flutter 3.47.5 / Dart 3.13.4, JDK Temurin 21.0.13+9 y Maven 3.10.0 en el entorno Linux temporal. Ver [resultados](validacion-proyectos-base.md). La lista completa de plugins de este documento sigue siendo candidata y no se añadió a la base todavía. La PC Windows permanece sin comprobar.
+
+
 ## Estado
 
 Se conserva el stack confirmado: Flutter/Dart/SQLite en Android y Java/Spring Boot/PostgreSQL en la PC Windows 10. Esta revisión propone las librerías y versiones concretas que faltaban. No instala herramientas en el equipo del usuario, no genera proyectos y no implementa conexiones.

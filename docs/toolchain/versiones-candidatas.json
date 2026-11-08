@@ -215,5 +215,15 @@
     "analisis, tests y APK debug",
     "resolucion Maven, dependency tree y tests",
     "instalacion Windows 10 y pruebas físicas de cámara/OCR/QR/TLS"
-  ]
+  ],
+  "ejecucion_base_linux": {
+    "flutter": "3.47.5",
+    "framework_revision": "6a19cca56475dbfba1478ee68d7bd0c2ef891da1",
+    "dart": "3.13.4",
+    "java": "Temurin 21.0.13+9, JDK completo",
+    "spring_boot": "4.1.2",
+    "maven": "3.10.0",
+    "dependencias_flutter_base": "Flutter SDK, flutter_test y flutter_lints 6.0.0; ver android/pubspec.lock",
+    "limite": "No valida todavía la PC Windows ni las librerías de funciones futuras."
+  }
 }

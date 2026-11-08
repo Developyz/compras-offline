@@ -1,12 +1,15 @@
 # Estructura del proyecto y etapas de trabajo
 
-Estado: organización propuesta para preparar la implementación. No se han generado proyectos Flutter/Spring Boot ni se han añadido dependencias o conexiones.
+**Actualización:** los proyectos mínimos ya se generaron. Ver [validación de bases](validacion-proyectos-base.md). Este mapa conserva la planificación de las capas que todavía no están implementadas.
+
+
+Estado: organización propuesta para preparar la implementación. Se generaron las bases Flutter/Spring Boot con dependencias mínimas, sin conexiones.
 
 ## 1. Qué existe y qué falta
 
 Ya existen el prototipo HTML, scripts SQL v1, migraciones v2, OpenAPI y documentos de diseño. Se comprobó la estructura SQL y el contrato, no una app Android ni la comunicación con Windows.
 
-Las carpetas android/ y server/ comienzan únicamente con instrucciones de organización. No son proyectos compilables todavía. El prototipo HTML permanece separado: se usará como referencia para construir widgets Flutter.
+Las carpetas android/ y server/ ya contienen las bases generadas. Solo se implementó la bienvenida Flutter y el arranque Spring sin HTTP; el resto de esta estructura sigue como planificación. El prototipo HTML permanece separado: se usará como referencia para construir widgets Flutter.
 
 ## 2. Android: MVVM con repositorios
 
