@@ -48,6 +48,9 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 
 - [Arquitectura y stack](docs/arquitectura-y-stack.md)
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
+- [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
+- [Preparación de Windows](docs/preparacion-windows.md)
+- [Registro de versiones consultadas](docs/toolchain/versiones-candidatas.json)
 - [Registro de tickets e imágenes](docs/registro-de-tickets.md)
 - [Objetivo y datos de compras](docs/objetivo-y-datos-de-compras.md)
 - [Catálogo de productos](docs/catalogo-de-productos.md)
@@ -60,6 +63,6 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 
 ## Próximas definiciones
 
-Revisar el contrato propuesto, elegir versiones/librerías, implementar y probar las reglas de vinculación, TLS y sincronización, y diseñar transferencia/retención de adjuntos. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo y resolver/compilar los proyectos mínimos. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. La matriz propone Riverpod/Drift/Dio y Spring JDBC/Flyway; no representa aún dependencias instaladas o compatibilidad conjunta probada. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.
