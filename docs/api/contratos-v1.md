@@ -198,11 +198,11 @@ El cliente aplica la página y persiste el cursor en la misma transacción local
 
 Los eventos eliminar llevan id, version y eliminado_en. Una raíz eliminada se aplica a sus hijos de forma consistente. No se envían archivos temporales.
 
-### Primera sincronización y retención: decisión pendiente
+### Primera sincronización y retención: diseño propuesto
 
 No usar simplemente desde=0 sobre un log truncado. Se necesita un snapshot consistente que incluya catálogo, canastas y compras de la ventana local con sus dependencias, más un cursor de corte; después se reciben cambios posteriores a ese corte.
 
-El contrato de snapshot, sus páginas y expiración aún no está cerrado. Tampoco está cerrado cómo filtrar cambios históricos fuera de 30 días sin romper referencias o perder el avance del cursor. No implementar la limpieza ni el arranque inicial hasta resolverlo. Las operaciones pendientes nunca se eliminan por la ventana temporal.
+El [diseño de primera sincronización y retención](primera-sincronizacion-y-retencion.md) propone snapshot materializado, páginas reanudables, instalación que preserve pendientes y procesamiento completo del log con selección local de la ventana. Sus detalles y migraciones deben formalizarse antes de implementar. Las operaciones pendientes nunca se eliminan por la ventana temporal.
 
 ## 7. Consultas, listas y períodos
 
@@ -286,4 +286,9 @@ La vinculación inicial deberá identificar y autorizar el celular. Método conf
 
 ## Vinculación por QR
 
-El usuario confirmó el QR como método de vinculación inicial. Ver [flujo y contratos propuestos](vinculacion-qr.md): solicitud, aprobación local, entrega y confirmación de credencial, revocación y recuperación de dirección. Los detalles técnicos están documentados para revisión; no hay endpoints implementados. Vincular no equivale a sincronizar: el snapshot inicial sigue pendiente.
+El usuario confirmó el QR como método de vinculación inicial. Ver [flujo y contratos propuestos](vinculacion-qr.md): solicitud, aprobación local, entrega y confirmación de credencial, revocación y recuperación de dirección. Los detalles técnicos están documentados para revisión; no hay endpoints implementados. Vincular no equivale a sincronizar: la propuesta de snapshot inicial está en [primera sincronización y retención](primera-sincronizacion-y-retencion.md); no está implementada.
+
+
+## Diseño complementario de sincronización inicial
+
+Ver [primera sincronización y retención](primera-sincronizacion-y-retencion.md) para las rutas propuestas de snapshots y consulta de recibos, protección de conflictos, catálogo y dependencias, recuperación ante cortes y limpieza exclusivamente local. Este diseño amplía el mapa anterior sin implementar endpoints.
