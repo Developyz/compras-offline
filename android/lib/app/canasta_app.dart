@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../demo/demo_data.dart';
+import '../domain/models/compra.dart';
+import '../features/tickets/views/confirmacion_revision_view.dart';
 import '../features/canasta/views/canasta_view.dart';
 import '../features/compras/views/detalle_compra_view.dart';
 import '../features/compras/views/historial_view.dart';
@@ -14,7 +16,7 @@ import '../features/tickets/views/revision_view.dart';
 import '../presentation/navigation/demo_scaffold.dart';
 import '../presentation/widgets/demo_widgets.dart';
 
-/// Recorrido visual con fixtures. TODO: componer ViewModels y servicios en su fase.
+/// Recorrido con ejemplos y revisión mediante ViewModel. Conexiones pendientes.
 class CanastaApp extends StatelessWidget {
   const CanastaApp({super.key});
   @override
@@ -46,11 +48,13 @@ class CanastaApp extends StatelessWidget {
         ),
         '/compra' => (
           4,
-          DetalleCompraView(
-            arguments: settings.arguments is DemoPurchaseArguments
-                ? settings.arguments! as DemoPurchaseArguments
-                : DemoPurchaseArguments(demoPurchases.first),
-          ),
+          settings.arguments is Compra
+              ? ConfirmacionRevisionView(settings.arguments! as Compra)
+              : DetalleCompraView(
+                  arguments: settings.arguments is DemoPurchaseArguments
+                      ? settings.arguments! as DemoPurchaseArguments
+                      : DemoPurchaseArguments(demoPurchases.first),
+                ),
         ),
         '/estados' => (0, const EstadosView()),
         _ => (0, const InicioView()),

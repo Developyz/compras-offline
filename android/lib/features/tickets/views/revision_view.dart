@@ -1,54 +1,95 @@
 import 'package:flutter/material.dart';
 
-import '../../../demo/demo_data.dart';
+import '../../../demo/revision_demo.dart';
+import '../../../presentation/widgets/compra_widgets.dart';
 import '../../../presentation/widgets/demo_widgets.dart';
-import '../../../presentation/widgets/purchase_widgets.dart';
+import '../viewmodels/revision_ticket_viewmodel.dart';
 
-enum DemoReviewScenario { correct, uncertain, difference }
-
-/// Escenarios exclusivamente visuales. TODO: confianza OCR, corrección y validación
-/// vendrán del ViewModel; confirmar guardará dato+cola en una transacción local.
+/// Revisión con dominio y ViewModel; ejemplos separados de las reglas.
+/// TODO: edición completa, OCR y guardado local transaccional.
 class RevisionView extends StatefulWidget {
-  const RevisionView({super.key});
+  const RevisionView({this.viewModel, super.key});
+  final RevisionTicketViewModel? viewModel;
   @override
   State<RevisionView> createState() => _RevisionViewState();
 }
 
 class _RevisionViewState extends State<RevisionView> {
   DemoReviewScenario scenario = DemoReviewScenario.correct;
-  bool productChecked = false;
-  bool quantityChecked = false;
-  bool totalChecked = false;
+  late RevisionTicketViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel =
+        widget.viewModel ??
+        RevisionTicketViewModel(crearRevisionDemo(scenario));
+    viewModel.addListener(_actualizar);
+  }
+
+  void _actualizar() => setState(() {});
+
+  @override
+  void didUpdateWidget(covariant RevisionView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.viewModel != widget.viewModel) {
+      viewModel.removeListener(_actualizar);
+      if (oldWidget.viewModel == null) {
+        viewModel.dispose();
+      }
+      viewModel =
+          widget.viewModel ??
+          RevisionTicketViewModel(crearRevisionDemo(scenario));
+      viewModel.addListener(_actualizar);
+    }
+  }
+
+  @override
+  void dispose() {
+    viewModel.removeListener(_actualizar);
+    if (widget.viewModel == null) {
+      viewModel.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final uncertain = scenario == DemoReviewScenario.uncertain;
-    final difference =
-        scenario == DemoReviewScenario.difference && !totalChecked;
-    final ready =
-        (!uncertain || (productChecked && quantityChecked)) && !difference;
-    final purchase = demoPurchases.first;
+    final esDemo = widget.viewModel == null;
+    final uncertain = esDemo && scenario == DemoReviewScenario.uncertain;
+    final difference = !viewModel.totalCoincide;
+    final ready = viewModel.puedeContinuar;
+    final productChecked = !viewModel.camposPendientes.contains(
+      campoProductoDemo,
+    );
+    final quantityChecked = !viewModel.camposPendientes.contains(
+      campoCantidadDemo,
+    );
+    final purchase = viewModel.borrador;
+    final totalCalculado = guaraniesDominio(purchase.resumen.totalCalculado);
+    final totalLeido = purchase.totalTicket == null
+        ? 'Pendiente'
+        : guaraniesDominio(purchase.totalTicket!);
     return DemoPage(
       title: 'Revisá tu compra',
       eyebrow: 'Antes de registrar',
       intro: 'Probá los resultados de lectura de un ticket de ejemplo.',
       children: [
-        DemoSelect<DemoReviewScenario>(
-          key: const ValueKey('review-scenario'),
-          label: 'Escenario de lectura · Simulación',
-          value: scenario,
-          options: const {
-            DemoReviewScenario.correct: 'Lectura correcta',
-            DemoReviewScenario.uncertain: 'Datos dudosos',
-            DemoReviewScenario.difference: 'Total diferente',
-          },
-          onChanged: (v) => setState(() {
-            scenario = v;
-            productChecked = false;
-            quantityChecked = false;
-            totalChecked = false;
-          }),
-        ),
+        if (esDemo)
+          DemoSelect<DemoReviewScenario>(
+            key: const ValueKey('review-scenario'),
+            label: 'Escenario de lectura · Simulación',
+            value: scenario,
+            options: const {
+              DemoReviewScenario.correct: 'Lectura correcta',
+              DemoReviewScenario.uncertain: 'Datos dudosos',
+              DemoReviewScenario.difference: 'Total diferente',
+            },
+            onChanged: (v) {
+              scenario = v;
+              viewModel.cargarBorrador(crearRevisionDemo(v));
+            },
+          ),
         const SizedBox(height: 16),
         Semantics(
           liveRegion: true,
@@ -82,7 +123,7 @@ class _RevisionViewState extends State<RevisionView> {
                   secondary: true,
                   onPressed: productChecked
                       ? null
-                      : () => setState(() => productChecked = true),
+                      : () => viewModel.marcarCampoRevisado(campoProductoDemo),
                 ),
               ],
             ),
@@ -108,7 +149,7 @@ class _RevisionViewState extends State<RevisionView> {
                   secondary: true,
                   onPressed: quantityChecked
                       ? null
-                      : () => setState(() => quantityChecked = true),
+                      : () => viewModel.marcarCampoRevisado(campoCantidadDemo),
                 ),
               ],
             ),
@@ -116,21 +157,20 @@ class _RevisionViewState extends State<RevisionView> {
         ],
         if (difference) ...[
           const SizedBox(height: 16),
-          DemoNotice(
-            'Hay ${guaranies(500)} de diferencia. '
-            'No ajustaremos los importes automáticamente.',
-            warning: true,
-          ),
+          DemoNotice('Revisá el total del ticket.', warning: true),
           const SizedBox(height: 12),
-          DemoAction(
-            'Simular corrección a ${guaranies(6000)}',
-            key: const ValueKey('review-total'),
-            secondary: true,
-            onPressed: () => setState(() => totalChecked = true),
-          ),
+          if (esDemo)
+            DemoAction(
+              'Simular corrección a $totalCalculado',
+              key: const ValueKey('review-total'),
+              secondary: true,
+              onPressed: () => viewModel.actualizarTotalTicket(
+                purchase.resumen.totalCalculado,
+              ),
+            ),
         ],
         const DemoSection('Datos de la compra'),
-        const DemoCard(
+        DemoCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -138,29 +178,28 @@ class _RevisionViewState extends State<RevisionView> {
                 'Comercio',
                 style: TextStyle(fontSize: 12, color: canastaMuted),
               ),
-              Text('Mercado del Barrio'),
+              Text(esDemo ? 'Mercado del Barrio' : 'Comercio según registro'),
               SizedBox(height: 12),
               Text(
                 'Fecha · Moneda',
                 style: TextStyle(fontSize: 12, color: canastaMuted),
               ),
-              Text('08/11/2026 · PYG (guaraníes)'),
+              Text(
+                '${purchase.fechaLocal.valor.split('-').reversed.join('/')} · PYG (guaraníes)',
+              ),
             ],
           ),
         ),
         const DemoSection('Productos del ticket'),
-        for (final line in purchase.lines) DemoLineTile(line),
-        DemoPurchaseTotals(purchase),
+        for (final line in purchase.detalles) DetalleCompraTile(line),
+        ResumenCompraWidget(purchase),
         const SizedBox(height: 12),
-        DemoMoneyRow(
-          'Total leído del ticket',
-          guaranies(difference ? 6500 : 6000),
-        ),
+        DemoMoneyRow('Total leído del ticket', totalLeido),
         const SizedBox(height: 10),
         DemoNotice(
           difference
-              ? 'El ticket indica ₲ 6.500 y el cálculo suma ₲ 6.000.'
-              : 'Total leído y calculado coinciden: ₲ 6.000.',
+              ? 'El ticket indica $totalLeido y el cálculo suma $totalCalculado.'
+              : 'Total leído y calculado coinciden: $totalCalculado.',
           warning: difference,
         ),
         const SizedBox(height: 20),
@@ -170,10 +209,7 @@ class _RevisionViewState extends State<RevisionView> {
           onPressed: ready
               ? () => Navigator.of(context).pushReplacementNamed(
                   '/compra',
-                  arguments: DemoPurchaseArguments(
-                    purchase,
-                    confirmation: true,
-                  ),
+                  arguments: viewModel.prepararConfirmacion(),
                 )
               : null,
         ),

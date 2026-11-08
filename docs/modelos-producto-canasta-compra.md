@@ -1,3 +1,5 @@
+> Informe de la etapa anterior. La integración de revisión se documenta en [repositorios y ViewModel](repositorios-y-viewmodel-revision.md).
+
 # Modelos de producto, canasta y compra
 
 Se amplía el dominio Dart con entidades inmutables y validaciones locales. Todavía no se conectan las pantallas ni se implementan repositorios, SQL, cámara, OCR o API. Los datos ficticios de la demostración permanecen separados.

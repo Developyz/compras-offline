@@ -34,7 +34,7 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Ya existen proyectos mínimos en Flutter y Spring Boot. Flutter presenta nueve pantallas navegables con datos ficticios; Spring Boot arranca sin HTTP ni persistencia. Ya existen modelos de producto, canasta y compra, junto con reglas de revisión, todavía separados de las vistas. La API y la sincronización siguen sin implementar. Ver [resultados de las bases](docs/validacion-proyectos-base.md).
+Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Ya existen proyectos mínimos en Flutter y Spring Boot. Flutter presenta nueve pantallas navegables con datos ficticios; Spring Boot arranca sin HTTP ni persistencia. Ya existen modelos de producto, canasta y compra, junto con reglas de revisión ya conectadas a la pantalla del ticket mediante un ViewModel. Las interfaces de repositorios están declaradas, sin implementaciones de almacenamiento. La API y la sincronización siguen sin implementar. Ver [resultados de las bases](docs/validacion-proyectos-base.md).
 
 ## Estructura
 
@@ -50,6 +50,7 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Repositorios y ViewModel de revisión](docs/repositorios-y-viewmodel-revision.md)
 - [Modelos de producto, canasta y compra](docs/modelos-producto-canasta-compra.md)
 - [Modelos y reglas de revisión de compras](docs/modelos-y-revision-compra.md)
 - [Vistas Flutter y validación visual](docs/vistas-flutter.md)
@@ -67,6 +68,6 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 
 ## Próximas definiciones
 
-Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y definir interfaces de repositorios y ViewModels para integrar el dominio en las vistas. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. La matriz propone Riverpod/Drift/Dio y Spring JDBC/Flyway; no representa aún dependencias instaladas o compatibilidad conjunta probada. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows e implementar y probar el adaptador SQLite antes de habilitar guardado real en el ViewModel. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. La matriz propone Riverpod/Drift/Dio y Spring JDBC/Flyway; no representa aún dependencias instaladas o compatibilidad conjunta probada. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.

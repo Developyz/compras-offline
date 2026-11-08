@@ -1,3 +1,5 @@
+> Informe de la etapa anterior. La integración de revisión se documenta en [repositorios y ViewModel](repositorios-y-viewmodel-revision.md).
+
 # Vistas Flutter de demostración
 
 Se trasladó el prototipo HTML al proyecto Android Flutter, sin conectar servicios. Todas las pantallas muestran «PROTOTIPO · DATOS FICTICIOS». La navegación inferior mantiene Inicio, Canasta, Cámara destacada en el centro, Productos e Historial.

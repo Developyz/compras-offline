@@ -1,7 +1,7 @@
-# Vistas de demostración
+# Vistas y ViewModels
 
-Inicio, canasta, captura, revisión, historial, detalle de compra, productos, detalle de producto y estados ya están trasladados a Flutter.
+Las pantallas conservan datos de demostración. Revisión de ticket ya usa `tickets/viewmodels/revision_ticket_viewmodel.dart`, conectado al dominio; su vista previa recibe la compra preparada y no escribe datos. Los demás módulos mantienen su estado visual de ejemplo.
 
-Las Views usan datos ficticios de `lib/demo/` y estado local de presentación para filtros, selección y validación simulada. No representan ViewModels de negocio ni escriben datos.
+Los escenarios de lectura se construyen en `lib/demo/revision_demo.dart`. El ViewModel no conoce fixtures, navegación ni conexiones. La View gestiona el ciclo de vida de sus listeners y del ViewModel propio.
 
-Ya existe modelos de producto, canasta, compra y reglas de revisión en `lib/domain/`, aún sin integrar. TODO: incorporar interfaces de repositorios y ViewModels con pruebas antes de conectar SQLite, cámara/OCR o API. La vinculación real por QR también queda pendiente. Las Views no abren conexiones.
+Ya existen interfaces de repositorios en `lib/domain/repositories/`. TODO: implementar persistencia transaccional y pruebas antes de conectar el guardado; completar edición, captura/OCR y vinculación. Las Views no abren conexiones.
