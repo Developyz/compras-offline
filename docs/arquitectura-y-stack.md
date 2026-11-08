@@ -68,3 +68,8 @@ Esto no significa que exista ya una app ejecutable, una API implementada ni una 
 ## Conexión confirmada
 
 La sincronización se realizará solo dentro de la misma red local. Fuera de ella, o con la PC apagada, se continuará trabajando en SQLite con operaciones pendientes. No se abrirán puertos del router hacia internet. Quedan pendientes la vinculación/autenticación, el puerto local, el descubrimiento o configuración de dirección y el transporte seguro. La configuración y conectividad real se comprobarán más adelante en la PC del usuario.
+
+
+## Método de vinculación confirmado
+
+El celular escaneará un QR mostrado en la PC para iniciar la vinculación. Ver [diseño de vinculación por QR](api/vinculacion-qr.md). La propuesta técnica incluye aprobación en la PC, identidad del servidor y credencial por dispositivo. No se necesita escanear un QR en cada sincronización. La herramienta administrativa de PC, sus pantallas y el mecanismo TLS aún deben implementarse y verificarse.
