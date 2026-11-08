@@ -281,4 +281,9 @@ La PC y Spring Boot deben estar encendidos y accesibles. Fuera de esa red, la ap
 
 Propuesta de configuración para revisar al implementar: reserva DHCP para la PC, puerto de API configurable y regla de firewall de Windows limitada a la red privada local. PostgreSQL permanecerá accesible solo para el servidor en la PC; no abrir su puerto al celular. No se configura nada de esto durante la etapa documental.
 
-La vinculación inicial deberá identificar y autorizar el celular. Propuesta pendiente: QR mostrado por la PC con dirección local, identidad verificable del servidor y código temporal de un solo uso. No incluir credenciales permanentes en el QR. Definir transporte cifrado y validación del servidor sin desactivar comprobaciones TLS. La red local no reemplaza la autorización.
+La vinculación inicial deberá identificar y autorizar el celular. Método confirmado: QR mostrado por la PC. El [diseño de vinculación](vinculacion-qr.md) propone dirección local, identidad verificable del servidor, secreto temporal y autorización explícita en la PC. No incluir credenciales permanentes en el QR. Definir transporte cifrado y validación del servidor sin desactivar comprobaciones TLS. La red local no reemplaza la autorización.
+
+
+## Vinculación por QR
+
+El usuario confirmó el QR como método de vinculación inicial. Ver [flujo y contratos propuestos](vinculacion-qr.md): solicitud, aprobación local, entrega y confirmación de credencial, revocación y recuperación de dirección. Los detalles técnicos están documentados para revisión; no hay endpoints implementados. Vincular no equivale a sincronizar: el snapshot inicial sigue pendiente.
