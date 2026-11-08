@@ -426,6 +426,9 @@ void main() {
       expect(await sesion.compras.listarRecientes(), hasLength(1));
       await pulsar(tester, find.text('₲ 2.337'));
       expect(find.text('Yerba de mi compra'), findsOneWidget);
+      await pulsar(tester, find.byKey(const ValueKey('nav-/canasta')));
+      expect(find.text('Mi lista de compras'), findsOneWidget);
+      expect(find.text('₲ 6.400'), findsNothing);
       await pulsar(tester, find.byKey(const ValueKey('nav-/')));
       expect(find.text('₲ 2.337'), findsNWidgets(3));
       expect(find.text('₲ 48.000'), findsNothing);
@@ -568,7 +571,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await pulsar(tester, find.text('Corregir total'));
+      await pulsar(tester, find.text('Cambiar lo que pagaste'));
       await tester.enterText(find.byType(TextFormField), '2.337');
       await pulsar(tester, find.text('Aplicar'));
       expect(vm.puedeGuardar, isTrue);

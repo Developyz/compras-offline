@@ -10,6 +10,7 @@ import '../features/compras/views/compra_local_view.dart';
 import '../domain/models/compra.dart';
 import '../features/tickets/views/confirmacion_revision_view.dart';
 import '../features/canasta/views/canasta_view.dart';
+import '../features/canasta/views/lista_pendiente_view.dart';
 import '../features/compras/views/detalle_compra_view.dart';
 import '../features/compras/views/historial_view.dart';
 import '../features/inicio/views/inicio_view.dart';
@@ -40,7 +41,12 @@ class CanastaApp extends StatelessWidget {
     ),
     onGenerateRoute: (settings) {
       final (tab, page) = switch (settings.name) {
-        '/canasta' => (1, const CanastaView()),
+        '/canasta' => (
+          1,
+          sesionLocal == null
+              ? const CanastaView()
+              : const ListaPendienteView(),
+        ),
         '/captura' => (
           2,
           Builder(

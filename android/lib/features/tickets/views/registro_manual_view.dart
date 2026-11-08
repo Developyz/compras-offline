@@ -178,8 +178,10 @@ class _RegistroManualViewState extends State<RegistroManualView> {
                 key: ValueKey('precio-${l.numero}'),
                 controller: l.precio,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Precio unitario · ₲',
+                decoration: InputDecoration(
+                  labelText: l.unidad.simbolo == 'u'
+                      ? 'Precio de uno · ₲'
+                      : 'Precio por ${l.unidad.simbolo} · ₲',
                 ),
               ),
               if (lineas.length > 1)
@@ -204,7 +206,9 @@ class _RegistroManualViewState extends State<RegistroManualView> {
         controller: descuento,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
-          labelText: 'Descuento general · ₲',
+          labelText: 'Descuento · ₲ (opcional)',
+          helperText: 'De toda la compra, si hubo.',
+          helperMaxLines: 2,
           hintText: '0',
         ),
       ),
@@ -212,7 +216,7 @@ class _RegistroManualViewState extends State<RegistroManualView> {
         key: const ValueKey('total-manual'),
         controller: total,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Total del ticket · ₲'),
+        decoration: const InputDecoration(labelText: '¿Cuánto pagaste? · ₲'),
       ),
       const SizedBox(height: 20),
       if (error != null) ...[

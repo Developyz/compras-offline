@@ -65,7 +65,7 @@ class _RevisionViewState extends State<RevisionView> {
     final respuesta = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Total del ticket'),
+        title: const Text('¿Cuánto pagaste?'),
         content: TextFormField(
           initialValue: texto,
           keyboardType: TextInputType.number,
@@ -223,7 +223,7 @@ class _RevisionViewState extends State<RevisionView> {
           const SizedBox(height: 12),
           if (persistente && viewModel.puedeEditar)
             DemoAction(
-              'Corregir total',
+              'Cambiar lo que pagaste',
               secondary: true,
               onPressed: _corregirTotal,
             ),
@@ -267,7 +267,10 @@ class _RevisionViewState extends State<RevisionView> {
           ),
         ResumenCompraWidget(purchase),
         const SizedBox(height: 12),
-        DemoMoneyRow('Total leído del ticket', totalLeido),
+        DemoMoneyRow(
+          persistente ? 'Pagaste' : 'Total leído del ticket',
+          totalLeido,
+        ),
         const SizedBox(height: 10),
         DemoNotice(
           difference

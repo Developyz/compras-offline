@@ -62,7 +62,7 @@ class ResumenCompraWidget extends StatelessWidget {
             '− ${guaraniesDominio(resumen.descuentoProductos)}',
           ),
         DemoMoneyRow(
-          'Descuento general',
+          'Descuento de la compra',
           '− ${guaraniesDominio(resumen.descuentoGeneral)}',
         ),
         if (resumen.ajuste != BigInt.zero)
@@ -72,7 +72,7 @@ class ResumenCompraWidget extends StatelessWidget {
           ),
         const Divider(),
         DemoMoneyRow(
-          'Total · PYG',
+          'Total pagado',
           guaraniesDominio(resumen.totalCalculado),
           emphasis: true,
         ),
