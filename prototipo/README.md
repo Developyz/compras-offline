@@ -13,11 +13,11 @@ Descargar `index.html` y abrirlo con un navegador. Es autocontenido: no requiere
 5. Historial: listado de compras ficticias.
 6. Detalle: renglones, descuento, total y estado ilustrativo.
 
-En teléfono se muestra navegación inferior. En escritorio se agrega un índice lateral. Los botones permiten recorrer el flujo y el botón Atrás del navegador funciona mediante rutas hash.
+En teléfono se muestra navegación inferior con Inicio, Canasta, Cámara e Historial. La cámara es la acción principal, con un botón circular destacado en el centro. En escritorio se agrega un índice lateral. Los botones permiten recorrer el flujo y el botón Atrás del navegador funciona mediante rutas hash.
 
 ## Alcance y límites
 
-Es una maqueta HTML/CSS/JavaScript para revisar vistas. No es la aplicación Flutter ni un proyecto Android compilable. El nombre visual «canasta.» es provisional. ARS y fechas se usan únicamente en los ejemplos; no son una decisión de moneda ni datos reales del usuario.
+Es una maqueta HTML/CSS/JavaScript para revisar vistas. No es la aplicación Flutter ni un proyecto Android compilable. El nombre visual «canasta.» es provisional. La moneda confirmada es el guaraní paraguayo (PYG), representado con ₲ y sin decimales. Los importes y fechas son ficticios; no son conversiones de los ejemplos anteriores ni datos reales del usuario. En la futura integración de datos se utilizará decimales_moneda=0 para PYG.
 
 No implementa modelos de negocio, ViewModels, reglas de cálculo, edición, almacenamiento, SQLite, API, PostgreSQL, cámara, OCR, selección de archivos, adjuntos ni sincronización. Los controles no disponibles muestran una explicación. La confirmación solo abre una pantalla de ejemplo y no modifica el historial. Al recargar no se conserva ninguna acción.
 
