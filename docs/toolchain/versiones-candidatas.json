@@ -1,0 +1,219 @@
+{
+  "estado": "propuesta_sin_resolucion_ni_compilacion_conjunta",
+  "flutter": {
+    "version_candidata": "3.47.5",
+    "dart": "el incluido en Flutter; registrar número exacto al descargar y exigir >=3.12.0 <4.0.0",
+    "fuente": "https://docs.flutter.dev/install/manual",
+    "limitacion": "El endpoint de metadatos del archivo Windows consultado devolvió 404; no se verificó el archivo binario ni su hash."
+  },
+  "java": {
+    "linea": "21 LTS",
+    "distribucion": "Eclipse Temurin x64",
+    "parche": "verificar y registrar la actualización de seguridad 21.x vigente al instalar",
+    "fuente": "https://adoptium.net/temurin/releases/?version=21&os=windows&arch=x64",
+    "limitacion": "La consulta directa de metadatos de binarios devolvió 403; no se verificó un MSI."
+  },
+  "spring_boot": {
+    "version": "4.1.2",
+    "fuente": "https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/4.1.2/spring-boot-starter-parent-4.1.2.pom",
+    "pom_verificado": true
+  },
+  "maven": {
+    "version": "3.10.0",
+    "fuente": "https://maven.apache.org/download.cgi",
+    "wrapper": "usar Maven Wrapper al generar el servidor"
+  },
+  "postgresql": {
+    "version_candidata": "16.15",
+    "fuente": "https://www.postgresql.org/versions.json",
+    "instalacion_windows": "pendiente de comprobar en la PC"
+  },
+  "android": {
+    "min_sdk_propuesto": 24,
+    "compile_sdk": "seleccionar según plantilla Flutter y máximo requerido por plugins; no cerrado",
+    "target_sdk": "definir al generar y revisar política de publicación",
+    "prueba_preferida": "celular físico"
+  },
+  "gestionadas_por_spring_boot": {
+    "flyway.version": "12.4.0",
+    "hibernate.version": "7.4.13.Final",
+    "hibernate-validator.version": "9.1.5.Final",
+    "jackson-2-bom.version": "2.21.7",
+    "jackson-bom.version": "3.1.7",
+    "junit.version": "4.13.2",
+    "junit-jupiter.version": "6.0.3",
+    "postgresql.version": "42.7.14",
+    "r2dbc-postgresql.version": "1.1.3.RELEASE",
+    "spring-security.version": "7.1.2"
+  },
+  "paquetes_flutter": {
+    "flutter_riverpod": {
+      "version_candidata": "3.5.0",
+      "environment_declarado": {
+        "sdk": "^3.12.0",
+        "flutter": ">=3.0.0"
+      },
+      "funcion": "Estado de pantallas y composición de dependencias",
+      "fuente": "https://pub.dev/api/packages/flutter_riverpod"
+    },
+    "drift": {
+      "version_candidata": "2.35.3",
+      "environment_declarado": {
+        "sdk": ">=3.10.0 <4.0.0"
+      },
+      "funcion": "SQLite tipado, consultas reactivas y transacciones",
+      "fuente": "https://pub.dev/api/packages/drift"
+    },
+    "sqlite3": {
+      "version_candidata": "3.9.1",
+      "environment_declarado": {
+        "sdk": ">=3.10.0 <4.0.0"
+      },
+      "funcion": "Motor SQLite nativo para Drift; no es su número de versión SQL",
+      "fuente": "https://pub.dev/api/packages/sqlite3"
+    },
+    "dio": {
+      "version_candidata": "5.11.1",
+      "environment_declarado": {
+        "sdk": ">=2.18.0 <4.0.0"
+      },
+      "funcion": "Cliente HTTP, cancelación y tratamiento de errores",
+      "fuente": "https://pub.dev/api/packages/dio"
+    },
+    "camera": {
+      "version_candidata": "0.12.2",
+      "environment_declarado": {
+        "sdk": "^3.12.0",
+        "flutter": ">=3.44.0"
+      },
+      "funcion": "Captura temporal del ticket",
+      "fuente": "https://pub.dev/api/packages/camera"
+    },
+    "google_mlkit_text_recognition": {
+      "version_candidata": "1.0.1",
+      "environment_declarado": {
+        "sdk": "^3.12.0",
+        "flutter": ">=3.44.0"
+      },
+      "funcion": "OCR local; comprobar que el modelo latino esté incluido",
+      "fuente": "https://pub.dev/api/packages/google_mlkit_text_recognition"
+    },
+    "mobile_scanner": {
+      "version_candidata": "7.5.0",
+      "environment_declarado": {
+        "sdk": "^3.7.0",
+        "flutter": ">=3.29.0"
+      },
+      "funcion": "QR de vinculación y códigos de barras; usar modelo incluido",
+      "fuente": "https://pub.dev/api/packages/mobile_scanner"
+    },
+    "flutter_secure_storage": {
+      "version_candidata": "11.2.0",
+      "environment_declarado": {
+        "sdk": ">=3.8.0 <4.0.0",
+        "flutter": ">=3.19.0"
+      },
+      "funcion": "Credenciales protegidas por Android",
+      "fuente": "https://pub.dev/api/packages/flutter_secure_storage"
+    },
+    "workmanager": {
+      "version_candidata": "0.10.10",
+      "environment_declarado": {
+        "sdk": ">=3.5.0 <4.0.0",
+        "flutter": ">=3.38.0"
+      },
+      "funcion": "Tareas diferibles; no garantiza sincronización inmediata",
+      "fuente": "https://pub.dev/api/packages/workmanager"
+    },
+    "fl_chart": {
+      "version_candidata": "1.3.0",
+      "environment_declarado": {
+        "sdk": ">=3.6.2 <4.0.0",
+        "flutter": ">=3.27.4"
+      },
+      "funcion": "Gráficos de evolución de precios",
+      "fuente": "https://pub.dev/api/packages/fl_chart"
+    },
+    "uuid": {
+      "version_candidata": "4.6.0",
+      "environment_declarado": {
+        "sdk": ">=3.0.0 <4.0.0"
+      },
+      "funcion": "Identificadores creados offline",
+      "fuente": "https://pub.dev/api/packages/uuid"
+    },
+    "crypto": {
+      "version_candidata": "3.0.8",
+      "environment_declarado": {
+        "sdk": "^3.4.0"
+      },
+      "funcion": "SHA-256 de operaciones y páginas",
+      "fuente": "https://pub.dev/api/packages/crypto"
+    },
+    "path_provider": {
+      "version_candidata": "2.1.6",
+      "environment_declarado": {
+        "sdk": "^3.10.0",
+        "flutter": ">=3.38.0"
+      },
+      "funcion": "Directorios privados/temporales",
+      "fuente": "https://pub.dev/api/packages/path_provider"
+    },
+    "path": {
+      "version_candidata": "1.9.1",
+      "environment_declarado": {
+        "sdk": "^3.4.0"
+      },
+      "funcion": "Construcción de rutas locales",
+      "fuente": "https://pub.dev/api/packages/path"
+    },
+    "intl": {
+      "version_candidata": "0.20.3",
+      "environment_declarado": {
+        "sdk": "^3.9.0"
+      },
+      "funcion": "Formato PYG sin decimales y fechas",
+      "fuente": "https://pub.dev/api/packages/intl"
+    },
+    "json_annotation": {
+      "version_candidata": "4.12.0",
+      "environment_declarado": {
+        "sdk": "^3.9.0"
+      },
+      "funcion": "DTOs JSON anotados",
+      "fuente": "https://pub.dev/api/packages/json_annotation"
+    },
+    "drift_dev": {
+      "version_candidata": "2.35.2",
+      "environment_declarado": {
+        "sdk": ">=3.10.0 <4.0.0"
+      },
+      "funcion": "Generación de consultas/modelos SQLite",
+      "fuente": "https://pub.dev/api/packages/drift_dev"
+    },
+    "build_runner": {
+      "version_candidata": "2.17.1",
+      "environment_declarado": {
+        "sdk": "^3.11.0"
+      },
+      "funcion": "Generación de archivos Dart",
+      "fuente": "https://pub.dev/api/packages/build_runner"
+    },
+    "json_serializable": {
+      "version_candidata": "6.15.2",
+      "environment_declarado": {
+        "sdk": "^3.12.0"
+      },
+      "funcion": "Generación de DTOs JSON",
+      "fuente": "https://pub.dev/api/packages/json_serializable"
+    }
+  },
+  "comprobaciones_pendientes": [
+    "flutter --version y Dart exacto",
+    "flutter doctor -v",
+    "flutter pub get con versiones candidatas y lockfile",
+    "analisis, tests y APK debug",
+    "resolucion Maven, dependency tree y tests",
+    "instalacion Windows 10 y pruebas físicas de cámara/OCR/QR/TLS"
+  ]
+}
