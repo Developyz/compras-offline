@@ -34,7 +34,7 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Android ya permite registrar una compra manual, revisarla y guardar compra + cola + recibo en SQLite, con historial local y reintentos sin duplicar la operación. Inicio, Canasta, Productos y Estados conservan su prototipo identificado; cámara/OCR y sincronización siguen pendientes. Ver [flujo y captura](docs/guardado-local-en-pantalla.md).
+Android ya permite registrar una compra manual, revisarla y guardar compra + cola + recibo en SQLite, con historial local y reintentos sin duplicar la operación. Inicio ya muestra gastos mensuales reales, resumen local y últimas compras. Canasta, Productos y Estados conservan su prototipo identificado; cámara/OCR y sincronización siguen pendientes. Ver [flujo y captura](docs/guardado-local-en-pantalla.md).
 
 Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLite v4. Las migraciones se comprobaron con preservación de datos. Spring Boot mantiene su base mínima sin HTTP ni persistencia; todavía no existe una API en ejecución.
 
@@ -52,6 +52,7 @@ Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLit
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Inicio con gastos reales](docs/inicio-gastos-reales.md)
 - [Guardado local en pantalla](docs/guardado-local-en-pantalla.md)
 - [SQLite: compras y cola](docs/sqlite-compras-y-cola.md)
 - [Repositorios y ViewModel de revisión](docs/repositorios-y-viewmodel-revision.md)
@@ -72,6 +73,6 @@ Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLit
 
 ## Próximas definiciones
 
-Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y conectar Inicio a gastos reales, completar catálogo/canasta y preparar captura/OCR. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. Drift/sqlite3 ya están resueltos y probados para el adaptador local; la matriz completa sigue siendo candidata y no representa compatibilidad conjunta probada de todos sus plugins. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y completar catálogo/canasta y preparar captura/OCR. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. Drift/sqlite3 ya están resueltos y probados para el adaptador local; la matriz completa sigue siendo candidata y no representa compatibilidad conjunta probada de todos sus plugins. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.

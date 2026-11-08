@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../demo/demo_data.dart';
 import 'sesion_local.dart';
+import '../features/inicio/views/inicio_local_view.dart';
 import '../features/tickets/views/registro_manual_view.dart';
 import '../features/compras/views/compras_locales_view.dart';
 import '../features/compras/views/compra_local_view.dart';
@@ -27,6 +28,7 @@ class CanastaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
     title: 'Canasta',
+    navigatorObservers: [rutasInicio],
     debugShowCheckedModeBanner: false,
     locale: const Locale('es', 'PY'),
     supportedLocales: const [Locale('es', 'PY')],
@@ -101,7 +103,12 @@ class CanastaApp extends StatelessWidget {
                 ),
         ),
         '/estados' => (0, const EstadosView()),
-        _ => (0, const InicioView()),
+        _ => (
+          0,
+          sesionLocal == null
+              ? const InicioView()
+              : InicioLocalView(sesionLocal!.compras),
+        ),
       };
       return MaterialPageRoute<void>(
         settings: settings,

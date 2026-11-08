@@ -1,4 +1,5 @@
 import '../models/canasta.dart';
+import '../models/resumen_inicio.dart';
 import '../models/compra.dart';
 import '../models/identidad_y_fecha.dart';
 import '../models/producto.dart';
@@ -37,6 +38,7 @@ final class ReciboGuardadoLocal {
 /// guardarYEncolar: transacción atómica, recibo persistido y reintento idempotente;
 /// mismo ID con otro contenido debe rechazarse. No borrar pendientes/conflictos.
 abstract interface class RepositorioCompras {
+  Future<ResumenInicio> resumenInicio(FechaLocalCompra hoy);
   Future<List<Compra>> listarRecientes({int limite = 100});
   Future<Compra?> obtenerPorId(String id);
   Future<ReciboGuardadoLocal> guardarYEncolar(EscrituraLocal<Compra> escritura);

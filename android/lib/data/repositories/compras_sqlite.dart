@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../../domain/models/compra.dart';
+import '../../domain/models/resumen_inicio.dart';
 import '../../domain/models/identidad_y_fecha.dart';
 import '../../domain/repositories/repositorios.dart';
 import '../local/base_local.dart';
@@ -45,6 +46,52 @@ class ComprasSqlite implements RepositorioCompras {
     'INSERT INTO $tabla (${datos.keys.join(',')}) VALUES (${List.filled(datos.length, '?').join(',')})',
     datos.values.toList(),
   );
+
+  @override
+  Future<ResumenInicio> resumenInicio(FechaLocalCompra hoy) =>
+      base.transaction(() async {
+        final inicio = '${hoy.valor.substring(0, 7)}-01';
+        final fecha = DateTime.parse(hoy.valor);
+        final fin = DateTime.utc(
+          fecha.year,
+          fecha.month + 1,
+          1,
+        ).toIso8601String().substring(0, 10);
+        final filas = await _filas(
+          "SELECT total_calculado_menor,fecha_local,moneda,decimales_moneda FROM compras WHERE eliminado_en IS NULL AND estado='confirmada'",
+        );
+        var mes = BigInt.zero, total = BigInt.zero;
+        var cantidadMes = 0;
+        for (final fila in filas) {
+          if (fila['moneda'] != 'PYG' || fila['decimales_moneda'] != 0) {
+            throw FormatException('Moneda local incompatible');
+          }
+          final importe = fila['total_calculado_menor'];
+          if (importe is! int || importe < 0) {
+            throw FormatException('Importe inválido');
+          }
+          final dia = FechaLocalCompra(fila['fecha_local'] as String).valor;
+          total += BigInt.from(importe);
+          if (dia.compareTo(inicio) >= 0 && dia.compareTo(fin) < 0) {
+            mes += BigInt.from(importe);
+            cantidadMes++;
+          }
+        }
+        final ids = await _filas(
+          "SELECT id FROM compras WHERE eliminado_en IS NULL AND estado='confirmada' ORDER BY fecha_local DESC,fecha_compra DESC,id DESC LIMIT 3",
+        );
+        final ultimas = <Compra>[];
+        for (final fila in ids) {
+          ultimas.add((await obtenerPorId(fila['id'] as String))!);
+        }
+        return ResumenInicio(
+          totalMes: mes,
+          totalLocal: total,
+          comprasMes: cantidadMes,
+          comprasLocales: filas.length,
+          ultimas: ultimas,
+        );
+      });
 
   @override
   Future<List<Compra>> listarRecientes({int limite = 100}) async {

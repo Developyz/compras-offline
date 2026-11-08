@@ -6,6 +6,8 @@ import 'package:compras_offline/app/inicio_local.dart';
 import 'package:compras_offline/app/sesion_local.dart';
 import 'package:compras_offline/data/local/base_local.dart';
 import 'package:compras_offline/domain/models/compra.dart';
+import 'package:compras_offline/domain/models/resumen_inicio.dart';
+import 'package:compras_offline/domain/models/identidad_y_fecha.dart';
 import 'package:compras_offline/domain/repositories/repositorios.dart';
 import 'package:compras_offline/features/tickets/viewmodels/registro_manual.dart';
 import 'package:compras_offline/features/tickets/viewmodels/revision_ticket_viewmodel.dart';
@@ -33,6 +35,15 @@ Compra manual(SesionLocal sesion, {String total = '2337'}) =>
     );
 
 class RepoControlado implements RepositorioCompras {
+  @override
+  Future<ResumenInicio> resumenInicio(FechaLocalCompra hoy) async =>
+      ResumenInicio(
+        totalMes: BigInt.zero,
+        totalLocal: BigInt.zero,
+        comprasMes: 0,
+        comprasLocales: 0,
+        ultimas: [],
+      );
   final llamadas = <EscrituraLocal<Compra>>[];
   late Future<ReciboGuardadoLocal> Function(EscrituraLocal<Compra>) respuesta;
   @override
@@ -415,6 +426,9 @@ void main() {
       expect(await sesion.compras.listarRecientes(), hasLength(1));
       await pulsar(tester, find.text('₲ 2.337'));
       expect(find.text('Yerba de mi compra'), findsOneWidget);
+      await pulsar(tester, find.byKey(const ValueKey('nav-/')));
+      expect(find.text('₲ 2.337'), findsNWidgets(3));
+      expect(find.text('₲ 48.000'), findsNothing);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
