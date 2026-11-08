@@ -1,4 +1,6 @@
-# Base de datos — versión inicial 1
+# Base de datos — esquema inicial y migraciones v2
+
+El diseño vigente incluye [migraciones v2](migrations/README.md). Para una instalación nueva ejecutar el script inicial del motor y luego su migración v2; para una base v1 ejecutar solo la migración. El resultado son **24 tablas PostgreSQL y 21 SQLite**. Las instrucciones de abajo describen la base v1 y deben completarse con ese segundo paso.
 
 ## Cómo ejecutar
 
@@ -19,7 +21,7 @@ Las claves foráneas impiden referencias inexistentes. Además se verifica que u
 
 - La aplicación genera UUID antes de guardar, incluso sin conexión. PostgreSQL valida el tipo UUID; SQLite lo almacena como texto y la app valida su formato.
 - Los campos *_en y fecha_compra son textos ISO 8601 UTC, con formato uniforme `2026-11-08T15:30:00.000Z`, validado por la aplicación. fecha_local es la fecha comercial `YYYY-MM-DD` usada para informes por día y mes.
-- Los importes son enteros de 64 bits en la unidad menor de la moneda. Con decimales_moneda=2, 150025 representa 1500,25. Esta elección evita errores de coma flotante en SQLite. La app debe validar moneda ISO 4217 y su escala.
+- Los importes son enteros de 64 bits en la unidad menor de la moneda. La moneda confirmada es PYG: decimales_moneda=0 y 6400 representa ₲ 6.400. La migración v2 cambia el DEFAULT a 0 sin convertir los datos anteriores. Esta elección evita errores de coma flotante en SQLite. La app debe validar moneda ISO 4217 y su escala.
 - Cantidades y contenido se almacenan en milésimas: cantidad_milesimas=1000 equivale a 1 unidad; 1250 equivale a 1,250 kg si la unidad es kg. contenido_milesimas=500000 con unidad g representa 500 g. Límite inicial: tres decimales de cantidad.
 - unidades_medida.factor_base expresa cuántas unidades base hay en una unidad: g=1, kg=1000, ml=1, l=1000, unidad=1. Solo se comparan unidades de la misma dimensión. Los UUID del catálogo deben compartirse entre PC y celular; no generar catálogos independientes.
 - No hay datos de ejemplo ni semillas obligatorias. Antes de registrar cantidades, crear las unidades necesarias desde la app o mediante una migración de catálogo compartida.
@@ -58,7 +60,7 @@ Estas tablas preparan el almacenamiento; **el SQL no implementa por sí solo la 
 - Borrar físicamente una compra antigua del caché local no es eliminarla del historial: no crear una operación de eliminación por esa limpieza.
 - La limpieza de 30 días requiere confirmación de sincronización de la compra y sus dependencias, sin operaciones pendientes ni conflictos. Primero quitar dependencias locales en una transacción. Conservar catálogo necesario, canastas abiertas e historial completo en la PC.
 - No hay limpieza automática en estos scripts. La retención de recibos y cambios debe considerar dispositivos desconectados y resincronización completa.
-- Vinculación/autenticación de dispositivos, cifrado, acceso remoto y contratos API se implementarán aparte. No guardar tokens de autenticación en estas tablas.
+- Vinculación/autenticación, cifrado y contratos API se implementarán aparte; el acceso es exclusivamente por red local. No guardar tokens de autenticación en estas tablas.
 
 ## Alcance
 
@@ -68,3 +70,12 @@ Modelo inicial para una instalación familiar. No incluye multiusuario ni aislam
 ## Diseño posterior de primera sincronización
 
 Ver [primera sincronización y retención](../docs/api/primera-sincronizacion-y-retencion.md). El documento describe snapshots, staging persistente y revisiones en conflicto que requieren migraciones adicionales: estos scripts iniciales aún no los implementan. La ventana propuesta son 30 días calendario incluyendo hoy, nunca aplicada a compras pendientes o en conflicto. La vinculación ya está definida por QR y la conexión será exclusivamente local, sin acceso remoto.
+
+
+## Contratos de esta revisión
+
+- [OpenAPI 3.0.3](../docs/api/openapi.json)
+- [Decisiones y reglas v2](../docs/api/decisiones-v2.md)
+- [Ejemplos JSON](../docs/api/ejemplos-v2.json)
+
+Migraciones comprobadas en PostgreSQL 16 y SQLite, con preservación de datos y restricciones. Estos controles no validan todavía una sincronización real entre dispositivos.
