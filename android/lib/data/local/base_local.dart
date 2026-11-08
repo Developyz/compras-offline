@@ -32,7 +32,7 @@ class BaseLocal extends GeneratedDatabase {
   }
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
   @override
   Iterable<TableInfo<Table, Object?>> get allTables => const [];
   @override
@@ -50,24 +50,29 @@ class BaseLocal extends GeneratedDatabase {
         );
       }
       final sql = (jsonDecode(
-        await _assets.loadString('assets/db/esquema_v3.json'),
+        await _assets.loadString('assets/db/esquema_v4.json'),
       ) as List).cast<String>();
       for (final sentencia in sql) {
         await customStatement(sentencia);
       }
     }),
     onUpgrade: (m, desde, hasta) => transaction(() async {
-      if (desde != 2 || hasta != 3) {
+      if ((desde != 2 && desde != 3) || hasta != 4) {
         throw UnsupportedError('Migración no soportada: $desde → $hasta');
       }
       final sql = (jsonDecode(
-        await _assets.loadString('assets/db/esquema_v3.json'),
+        await _assets.loadString('assets/db/esquema_v4.json'),
       ) as List).cast<String>();
       for (final sentencia in sql.where(
         (s) =>
-            s.startsWith('CREATE TABLE recibos_guardado_local') ||
-            s.startsWith('CREATE INDEX idx_recibos_entidad') ||
-            s.startsWith('INSERT INTO versiones_esquema VALUES (3,'),
+            (desde == 2 &&
+                (s.startsWith('CREATE TABLE recibos_guardado_local') ||
+                    s.startsWith('CREATE INDEX idx_recibos_entidad') ||
+                    s.startsWith(
+                      'INSERT INTO versiones_esquema VALUES (3,',
+                    ))) ||
+            s.startsWith('CREATE TABLE metadatos_locales') ||
+            s.startsWith('INSERT INTO versiones_esquema VALUES (4,'),
       )) {
         await customStatement(sentencia);
       }

@@ -26,10 +26,12 @@ class DemoPage extends StatelessWidget {
     required this.eyebrow,
     required this.children,
     this.intro,
+    this.mostrarAvisoDemo = true,
   });
   final String title;
   final String eyebrow;
   final String? intro;
+  final bool mostrarAvisoDemo;
   final List<Widget> children;
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
@@ -41,8 +43,10 @@ class DemoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const DemoNotice('PROTOTIPO · DATOS FICTICIOS'),
-            const SizedBox(height: 22),
+            if (mostrarAvisoDemo) ...[
+              const DemoNotice('PROTOTIPO · DATOS FICTICIOS'),
+              const SizedBox(height: 22),
+            ],
             Text(
               eyebrow.toUpperCase(),
               style: const TextStyle(

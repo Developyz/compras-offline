@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../demo/demo_data.dart';
+import 'sesion_local.dart';
+import '../features/tickets/views/registro_manual_view.dart';
+import '../features/compras/views/compras_locales_view.dart';
+import '../features/compras/views/compra_local_view.dart';
 import '../domain/models/compra.dart';
 import '../features/tickets/views/confirmacion_revision_view.dart';
 import '../features/canasta/views/canasta_view.dart';
@@ -18,7 +22,8 @@ import '../presentation/widgets/demo_widgets.dart';
 
 /// Recorrido con ejemplos y revisión mediante ViewModel. Conexiones pendientes.
 class CanastaApp extends StatelessWidget {
-  const CanastaApp({super.key});
+  const CanastaApp({this.sesionLocal, super.key});
+  final SesionLocal? sesionLocal;
   @override
   Widget build(BuildContext context) => MaterialApp(
     title: 'Canasta',
@@ -34,9 +39,48 @@ class CanastaApp extends StatelessWidget {
     onGenerateRoute: (settings) {
       final (tab, page) = switch (settings.name) {
         '/canasta' => (1, const CanastaView()),
-        '/captura' => (2, const CapturaView()),
-        '/revision' => (2, const RevisionView()),
-        '/historial' => (4, const HistorialView()),
+        '/captura' => (
+          2,
+          Builder(
+            builder: (context) => CapturaView(
+              onRegistrarManual: sesionLocal == null
+                  ? null
+                  : () => Navigator.of(context).pushNamed('/manual'),
+            ),
+          ),
+        ),
+        '/manual' => (
+          2,
+          sesionLocal == null
+              ? const CapturaView()
+              : RegistroManualView(sesionLocal!),
+        ),
+        '/revision' => (
+          2,
+          settings.arguments is Compra && sesionLocal != null
+              ? RevisionView(
+                  viewModel: sesionLocal!.revisar(
+                    settings.arguments! as Compra,
+                  ),
+                  disposeViewModel: true,
+                )
+              : const RevisionView(),
+        ),
+        '/historial' => (
+          4,
+          sesionLocal == null
+              ? const HistorialView()
+              : ComprasLocalesView(sesionLocal!.compras),
+        ),
+        '/compra-local' => (
+          4,
+          settings.arguments is Compra && sesionLocal != null
+              ? CompraLocalView(
+                  settings.arguments! as Compra,
+                  unidades: sesionLocal!.simbolos,
+                )
+              : const HistorialView(),
+        ),
         '/productos' => (3, const ProductosView()),
         '/producto' => (
           3,

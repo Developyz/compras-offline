@@ -1,3 +1,5 @@
+> Etapa anterior. El guardado ya está conectado al formulario/revisión y al historial local: [estado actual](guardado-local-en-pantalla.md). SQLite usa esquema v4 con identidad persistente.
+
 # SQLite: compras, cola y recibos locales
 
 Se implementa `ComprasSqlite`, primer adaptador de `RepositorioCompras`, con Drift 2.35.3 y sqlite3 3.9.1. Se prueba con SQLite nativo real, en memoria y en archivo, desde Flutter en Linux. No es una base simulada.

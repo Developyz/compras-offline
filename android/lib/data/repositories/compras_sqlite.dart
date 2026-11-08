@@ -47,6 +47,20 @@ class ComprasSqlite implements RepositorioCompras {
   );
 
   @override
+  Future<List<Compra>> listarRecientes({int limite = 100}) async {
+    if (limite < 1 || limite > 100) throw RangeError.range(limite, 1, 100);
+    final ids = await _filas(
+      'SELECT id FROM compras WHERE eliminado_en IS NULL ORDER BY fecha_compra DESC,id DESC LIMIT $limite',
+    );
+    final compras = <Compra>[];
+    for (final fila in ids) {
+      final compra = await obtenerPorId(fila['id'] as String);
+      if (compra != null) compras.add(compra);
+    }
+    return List.unmodifiable(compras);
+  }
+
+  @override
   Future<Compra?> obtenerPorId(String id) async {
     final normalizado = DatosEntidad.id(id);
     return base.transaction(() async {

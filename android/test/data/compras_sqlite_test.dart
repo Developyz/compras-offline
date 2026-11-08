@@ -153,7 +153,7 @@ void main() {
                 )
                 .getSingle())
             .read<int>('n'),
-        22,
+        23,
       );
       expect(
         (await db.customSelect('PRAGMA foreign_keys').getSingle()).read<int>(
@@ -385,7 +385,7 @@ void main() {
     }
   });
 
-  test('migración Drift v2 a v3 conserva compras y añade recibos', () async {
+  test('migración Drift v2 a v4 conserva compras y añade recibos', () async {
     await repo.guardarYEncolar(solicitud(fixture()));
     // Base auxiliar con el mismo esquema v2, sin recibos, antes de abrir Drift.
     final directorio = await Directory.systemTemp.createTemp(
@@ -399,7 +399,8 @@ void main() {
       dispositivoId: id(6001),
     ).guardarYEncolar(solicitud(fixture()));
     await v2.customStatement('DROP TABLE recibos_guardado_local');
-    await v2.customStatement('DELETE FROM versiones_esquema WHERE version=3');
+    await v2.customStatement('DROP TABLE metadatos_locales');
+    await v2.customStatement('DELETE FROM versiones_esquema WHERE version>=3');
     await v2.customStatement('PRAGMA user_version=2');
     await v2.close();
     final v3 = BaseLocal.enArchivo(archivo);
@@ -416,7 +417,7 @@ void main() {
         (await v3.customSelect('PRAGMA user_version').getSingle()).read<int>(
           'user_version',
         ),
-        3,
+        4,
       );
       expect(await contar(v3, 'cola_sincronizacion'), 1);
     } finally {

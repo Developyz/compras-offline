@@ -1,8 +1,10 @@
-> SQLite tiene ahora una ampliación local v3 para recibos persistentes: ejecutar `migrations/sqlite-v003.sql` después de v2 produce 22 tablas. PostgreSQL conserva 24. Ver [adaptador y validación](../docs/sqlite-compras-y-cola.md). Las instrucciones siguientes describen las bases v1/v2.
+# Base de datos
 
-# Base de datos — esquema inicial y migraciones v2
+El esquema actual tiene **24 tablas PostgreSQL v2 y 23 SQLite v4**. Seguir el [orden completo de migraciones](migrations/README.md): SQLite necesita las ampliaciones v002, v003 y v004 después del script inicial; PostgreSQL necesita v002.
 
-El diseño vigente incluye [migraciones v2](migrations/README.md). Para una instalación nueva ejecutar el script inicial del motor y luego su migración v2; para una base v1 ejecutar solo la migración. El resultado son **24 tablas PostgreSQL y 21 SQLite**. Las instrucciones de abajo describen la base v1 y deben completarse con ese segundo paso.
+Android ya usa un adaptador Drift/SQLite para compras manuales, cola, recibos e identidad. Ver [flujo implementado](../docs/guardado-local-en-pantalla.md). `unidades-iniciales.json` fija IDs comunes para unidad/kg/L; no generar otros IDs para esas mismas unidades al preparar el servidor.
+
+Las secciones siguientes describen las tablas de negocio del esquema inicial y deben leerse con las migraciones actuales.
 
 ## Cómo ejecutar
 

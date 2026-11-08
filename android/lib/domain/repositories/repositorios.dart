@@ -5,7 +5,7 @@ import '../models/producto.dart';
 import '../models/valores_compra.dart';
 
 /// Una operación conserva ID y contenido durante todos sus reintentos.
-/// TODO: el coordinador generará UUID y gestionará versiones; no la View.
+/// El ViewModel fija UUID en el primer intento. Versiones de edición pendientes.
 final class EscrituraLocal<T> {
   EscrituraLocal({
     required this.entidad,
@@ -37,6 +37,7 @@ final class ReciboGuardadoLocal {
 /// guardarYEncolar: transacción atómica, recibo persistido y reintento idempotente;
 /// mismo ID con otro contenido debe rechazarse. No borrar pendientes/conflictos.
 abstract interface class RepositorioCompras {
+  Future<List<Compra>> listarRecientes({int limite = 100});
   Future<Compra?> obtenerPorId(String id);
   Future<ReciboGuardadoLocal> guardarYEncolar(EscrituraLocal<Compra> escritura);
 }

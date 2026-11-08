@@ -34,7 +34,9 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Ya existen proyectos mínimos en Flutter y Spring Boot. Flutter presenta nueve pantallas navegables con datos ficticios; Spring Boot arranca sin HTTP ni persistencia. Ya existen modelos de producto, canasta y compra, junto con reglas de revisión ya conectadas a la pantalla del ticket mediante un ViewModel. Las interfaces de repositorios están declaradas; ComprasSqlite ya guarda compras nuevas, cola y recibo atómicamente, aún sin activar el guardado en pantalla. SQLite v3 añade recibos locales y suma 22 tablas. La API y la sincronización siguen sin implementar. Ver [resultados de las bases](docs/validacion-proyectos-base.md).
+Android ya permite registrar una compra manual, revisarla y guardar compra + cola + recibo en SQLite, con historial local y reintentos sin duplicar la operación. Inicio, Canasta, Productos y Estados conservan su prototipo identificado; cámara/OCR y sincronización siguen pendientes. Ver [flujo y captura](docs/guardado-local-en-pantalla.md).
+
+Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLite v4. Las migraciones se comprobaron con preservación de datos. Spring Boot mantiene su base mínima sin HTTP ni persistencia; todavía no existe una API en ejecución.
 
 ## Estructura
 
@@ -50,6 +52,7 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Guardado local en pantalla](docs/guardado-local-en-pantalla.md)
 - [SQLite: compras y cola](docs/sqlite-compras-y-cola.md)
 - [Repositorios y ViewModel de revisión](docs/repositorios-y-viewmodel-revision.md)
 - [Modelos de producto, canasta y compra](docs/modelos-producto-canasta-compra.md)
@@ -69,6 +72,6 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 
 ## Próximas definiciones
 
-Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y conectar el adaptador SQLite probado al ViewModel con IDs estables y manejo de progreso/error. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. Drift/sqlite3 ya están resueltos y probados para el adaptador local; la matriz completa sigue siendo candidata y no representa compatibilidad conjunta probada de todos sus plugins. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato y la matriz de versiones candidatas, completar la preparación del equipo Windows y conectar Inicio a gastos reales, completar catálogo/canasta y preparar captura/OCR. Después implementar y probar vinculación, TLS y sincronización, y cerrar transferencia/retención de adjuntos. Drift/sqlite3 ya están resueltos y probados para el adaptador local; la matriz completa sigue siendo candidata y no representa compatibilidad conjunta probada de todos sus plugins. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.

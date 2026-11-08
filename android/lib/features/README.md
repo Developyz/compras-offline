@@ -1,7 +1,9 @@
 # Vistas y ViewModels
 
-Las pantallas conservan datos de demostración. Revisión de ticket ya usa `tickets/viewmodels/revision_ticket_viewmodel.dart`, conectado al dominio; su vista previa recibe la compra preparada y no escribe datos. Los demás módulos mantienen su estado visual de ejemplo.
+Carga manual, revisión, guardado y listado/detalle local ya usan el dominio y SQLite. El ViewModel depende de RepositorioCompras; conserva una solicitud por reintento, informa progreso/error y acepta solo el recibo correspondiente. No importa Drift ni navega.
 
-Los escenarios de lectura se construyen en `lib/demo/revision_demo.dart`. El ViewModel no conoce fixtures, navegación ni conexiones. La View gestiona el ciclo de vida de sus listeners y del ViewModel propio.
+Inicio, Canasta, Productos y Estados conservan su demostración. Los tickets de ejemplo no escriben datos. Las Views de datos reales ocultan los avisos ficticios y usan textos breves.
 
-Ya existen interfaces de repositorios en `lib/domain/repositories/`. TODO: implementar persistencia transaccional y pruebas antes de conectar el guardado; completar edición, captura/OCR y vinculación. Las Views no abren conexiones.
+La View libera sus listeners y su ViewModel propio, incluido el creado por la composición de rutas. La sesión pertenece al arranque y controla la base.
+
+TODO: gastos reales en Inicio, catálogo/canasta, edición, cámara/OCR y sincronización. Las Views no abren conexiones SQL ni HTTP.

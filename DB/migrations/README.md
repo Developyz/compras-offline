@@ -1,38 +1,34 @@
-> Ampliación local SQLite v3: ejecutar `sqlite-v003.sql` después de v2 añade `recibos_guardado_local` (22 tablas SQLite). No cambia PostgreSQL ni el protocolo v2. El adaptador Drift instala v3 en bases nuevas y migra bases Drift v2; no adopta automáticamente bases manuales. Ver [SQLite y cola](../../docs/sqlite-compras-y-cola.md).
+# Migraciones SQL
 
-# Migraciones de diseño v2
+Estado actual: **PostgreSQL v2, 24 tablas**; **SQLite v4, 23 tablas**. V3/v4 son ampliaciones exclusivamente locales para recibos e identidad; no cambian el protocolo ni los snapshots v2.
 
-Estas migraciones amplían los scripts iniciales del proyecto. No implementan API, autenticación, sincronización ni limpieza automática.
+## Orden de ejecución manual
 
-## Orden de ejecución
+| Motor y base | Archivos en orden |
+| --- | --- |
+| PostgreSQL vacía | `DB/postgresql.sql`, `postgresql-v002.sql` |
+| PostgreSQL v1 | `postgresql-v002.sql` |
+| SQLite vacía | `DB/sqlite.sql`, `sqlite-v002.sql`, `sqlite-v003.sql`, `sqlite-v004.sql` |
+| SQLite v1 | `sqlite-v002.sql`, `sqlite-v003.sql`, `sqlite-v004.sql` |
+| SQLite v2 | `sqlite-v003.sql`, `sqlite-v004.sql` |
+| SQLite v3 | `sqlite-v004.sql` |
 
-| Motor | Base vacía | Base inicial v1 existente |
-| --- | --- | --- |
-| PostgreSQL 14+ | Ejecutar `DB/postgresql.sql`, luego `DB/migrations/postgresql-v002.sql` | Solo `postgresql-v002.sql` |
-| SQLite 3.24+ | Ejecutar `DB/sqlite.sql`, luego `sqlite-v002.sql` y `sqlite-v003.sql` | `sqlite-v002.sql` y luego `sqlite-v003.sql` |
+Seleccionar la base correcta y ejecutar cada archivo completo una sola vez. No mezclar motores, repetir el script inicial ni continuar después de un error. Conservar una copia antes de migrar datos existentes.
 
-Seleccionar primero la base correcta en el gestor. Ejecutar cada archivo completo una sola vez. No mezclar motores ni volver a ejecutar el script inicial sobre una base existente. Hacer una copia de la base antes de migrarla. Una migración fallida debe detenerse y revertirse: no continuar ignorando errores.
+SQLite v002 cambia `foreign_keys` fuera de BEGIN para reconstruir `compras`; ejecutarlo sin otra transacción abierta. Si falla, detenerse, ejecutar `ROLLBACK; PRAGMA foreign_keys=ON;` y comprobar `PRAGMA foreign_key_check;`. No ignorar restricciones fallidas. La migración conserva importes existentes y deja historia desconocida en null; su SELECT final señala PYG con escala antigua para revisión, sin convertirlo silenciosamente.
 
-En SQLite, ejecutar sin una transacción abierta: el script cambia temporalmente `foreign_keys` para reconstruir `compras`. En caso de error, ejecutar `ROLLBACK; PRAGMA foreign_keys=ON;` y comprobar `PRAGMA foreign_key_check;`. Al terminar correctamente se reactivan y comprueban las FK. No ejecutar el script dentro de una transacción que abra automáticamente el gestor.
+V003 añade `recibos_guardado_local`. V004 añade `metadatos_locales` para un UUID de instalación no secreto. No contienen tokens ni fotos.
 
-La tabla `versiones_esquema` registra la aplicación de v2. El adaptador Flutter instala un esquema consolidado v3 y migra bases Drift v2; la adopción de bases manuales sigue pendiente. La integración de migraciones en Java también sigue pendiente.
+## Ejecutor Flutter
 
-## Resultado
+Drift instala un esquema consolidado v4 en bases nuevas y migra bases administradas con `user_version` 2/3 a 4. `android/tool/generar_esquema_sqlite.py` deriva el asset de los SQL oficiales; no ejecuta los scripts con BEGIN/COMMIT dentro de otra transacción.
 
-- PostgreSQL: 24 tablas después de v2.
-- SQLite: 21 tablas después de v2.
-- Ambas: campos de contexto histórico en detalles y DEFAULT 0 para decimales de compras.
-- La migración preserva datos existentes, no convierte moneda y deja snapshots históricos desconocidos en NULL.
-- El SELECT final señala PYG con escala antigua distinta de cero: requiere revisión manual y una migración de datos específica antes de usar esos registros con la API.
+Una base manual con tablas y sin versión Drift se rechaza sin borrar datos. No marcarla como una versión administrada a ciegas: falta su adaptación/importación explícita. La integración PostgreSQL/Spring Boot sigue pendiente.
 
-Los scripts iniciales siguen representando v1; por eso instalar solo esos archivos no alcanza para v2.
+`DB/unidades-iniciales.json` define IDs estables compartidos. La sesión Android instala/verifica solo ese catálogo e identidad, sin crear compras de ejemplo. La futura preparación del servidor deberá consumir el mismo manifiesto.
 
-## Relaciones y responsabilidades
+## Responsabilidades preservadas
 
-En PC: sesión de QR → solicitud → entrega cifrada/credencial → dispositivo. Snapshot → dispositivo/servidor → páginas. La solicitud contiene un dispositivo candidato que no está autorizado hasta aprobación local.
+V2 incorpora vinculación, revisiones, snapshots persistentes y conflictos. El servicio debe coordinar estados y autorización; los CHECK no implementan por sí solos esa lógica. La cola sin servidor asignado no se envía automáticamente. No reasignar compras a otra PC ni eliminar pendientes/conflictos por antigüedad.
 
-En Android: servidor confiado → revisiones confirmadas, descargas, conflictos y cola asociada. Descarga → páginas. Solo una PC activa por base; las filas de cola sin servidor asignado no se envían automáticamente.
-
-El servicio debe coordinar estados entre tablas en transacciones. Los estados declarados en CHECK no son una máquina de estados completa ni sustituyen autorización o validaciones de negocio.
-
-Ver [decisiones v2](../../docs/api/decisiones-v2.md), [OpenAPI](../../docs/api/openapi.json) y [ejemplos](../../docs/api/ejemplos-v2.json).
+Ver [guardado en pantalla](../../docs/guardado-local-en-pantalla.md), [SQLite y cola](../../docs/sqlite-compras-y-cola.md), [decisiones v2](../../docs/api/decisiones-v2.md) y [OpenAPI](../../docs/api/openapi.json).

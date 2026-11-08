@@ -1,13 +1,87 @@
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../domain/models/compra.dart';
 import '../../../domain/models/valores_compra.dart';
 import '../../../domain/services/revision_compra.dart';
+import '../../../domain/repositories/repositorios.dart';
 
-/// Coordina revisión en memoria. No navega, no guarda ni conoce los ejemplos.
+enum EstadoGuardado { listo, guardando, error, guardado }
+
+/// Coordina revisión y guardado por contrato. No navega ni conoce SQLite o ejemplos.
 class RevisionTicketViewModel extends ChangeNotifier {
-  RevisionTicketViewModel(Compra borrador)
-    : _borrador = _exigirBorrador(borrador);
+  RevisionTicketViewModel(
+    Compra borrador, {
+    this.repositorio,
+    String Function()? nuevoId,
+    Map<String, String> unidades = const {},
+  }) : _borrador = _exigirBorrador(borrador),
+       _nuevoId = nuevoId ?? const Uuid().v4,
+       unidades = Map.unmodifiable(unidades);
+
+  final RepositorioCompras? repositorio;
+  final String Function() _nuevoId;
+  final Map<String, String> unidades;
+  EscrituraLocal<Compra>? _escritura;
+  bool _cerrado = false;
+  EstadoGuardado _estado = EstadoGuardado.listo;
+  EstadoGuardado get estadoGuardado => _estado;
+  ReciboGuardadoLocal? _recibo;
+  ReciboGuardadoLocal? get recibo => _recibo;
+  Compra? get compraGuardada =>
+      _estado == EstadoGuardado.guardado ? _escritura?.entidad : null;
+  Object? _error;
+  Object? get errorGuardado => _error;
+  bool get permiteGuardar => repositorio != null;
+  bool get puedeEditar =>
+      !_cerrado && _escritura == null && _estado != EstadoGuardado.guardando;
+  bool get puedeGuardar =>
+      permiteGuardar &&
+      puedeContinuar &&
+      !_cerrado &&
+      _estado != EstadoGuardado.guardando &&
+      _estado != EstadoGuardado.guardado;
+
+  void _exigirEditable() {
+    if (!puedeEditar) {
+      throw StateError('La solicitud de guardado ya está fijada');
+    }
+  }
+
+  void _avisar() {
+    if (!_cerrado) notifyListeners();
+  }
+
+  Future<void> guardar() async {
+    if (!puedeGuardar) return;
+    _estado = EstadoGuardado.guardando;
+    _error = null;
+    _avisar();
+    try {
+      _escritura ??= EscrituraLocal(
+        entidad: prepararConfirmacion(),
+        operacionId: _nuevoId(),
+        versionBase: BigInt.zero,
+      );
+      final recibo = await repositorio!.guardarYEncolar(_escritura!);
+      if (recibo.entidadId != _escritura!.entidad.id ||
+          recibo.operacionId != _escritura!.operacionId) {
+        throw StateError('El recibo no corresponde a la solicitud');
+      }
+      _recibo = recibo;
+      _estado = EstadoGuardado.guardado;
+    } catch (error) {
+      _error = error;
+      _estado = EstadoGuardado.error;
+    }
+    _avisar();
+  }
+
+  @override
+  void dispose() {
+    _cerrado = true;
+    super.dispose();
+  }
 
   Compra _borrador;
   Compra get borrador => _borrador;
@@ -28,11 +102,13 @@ class RevisionTicketViewModel extends ChangeNotifier {
   }
 
   void cargarBorrador(Compra compra) {
+    _exigirEditable();
     _borrador = _exigirBorrador(compra);
     notifyListeners();
   }
 
   void marcarCampoRevisado(String campo) {
+    _exigirEditable();
     if (!camposPendientes.contains(campo)) {
       return;
     }
@@ -43,6 +119,7 @@ class RevisionTicketViewModel extends ChangeNotifier {
   }
 
   void actualizarTotalTicket(ImportePyg? total) {
+    _exigirEditable();
     _borrador = _copiar(total: total, cambiarTotal: true);
     notifyListeners();
   }

@@ -18,7 +18,8 @@ String cantidadDominio(CantidadCompra cantidad) {
 }
 
 class DetalleCompraTile extends StatelessWidget {
-  const DetalleCompraTile(this.detalle, {super.key});
+  const DetalleCompraTile(this.detalle, {this.unidad, super.key});
+  final String? unidad;
   final DetalleCompra detalle;
   @override
   Widget build(BuildContext context) => Padding(
@@ -32,7 +33,7 @@ class DetalleCompraTile extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          '${cantidadDominio(detalle.cantidad)} × ${guaraniesDominio(detalle.precioUnitario)}',
+          '${cantidadDominio(detalle.cantidad)}${unidad == null ? '' : ' $unidad'} × ${guaraniesDominio(detalle.precioUnitario)}',
           style: const TextStyle(color: canastaMuted, fontSize: 12),
         ),
         const SizedBox(height: 5),

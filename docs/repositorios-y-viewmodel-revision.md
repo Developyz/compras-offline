@@ -1,3 +1,5 @@
+> Etapa anterior. El guardado ya está conectado al formulario/revisión y al historial local: [estado actual](guardado-local-en-pantalla.md). SQLite usa esquema v4 con identidad persistente.
+
 > Actualización: ya existe un [adaptador SQLite de compras](sqlite-compras-y-cola.md) con dependencias resueltas y pruebas. El guardado en pantalla sigue pendiente. El resto de este documento conserva su etapa de referencia.
 
 # Repositorios y ViewModel de revisión

@@ -4,13 +4,22 @@ import '../../../presentation/widgets/demo_widgets.dart';
 
 /// TODO: permisos, cámara y OCR local. Eliminar capturas temporales al confirmar/cancelar.
 class CapturaView extends StatelessWidget {
-  const CapturaView({super.key});
+  const CapturaView({this.onRegistrarManual, super.key});
+  final VoidCallback? onRegistrarManual;
   @override
   Widget build(BuildContext context) => DemoPage(
     title: 'Capturá tu ticket',
     eyebrow: 'Del ticket a tu registro',
     intro: 'La app leerá los productos, precios y descuentos para que los revises.',
     children: [
+      if (onRegistrarManual != null) ...[
+        DemoAction(
+          'Registrar a mano',
+          key: const ValueKey('registro-manual'),
+          onPressed: onRegistrarManual,
+        ),
+        const SizedBox(height: 16),
+      ],
       Semantics(
         label: 'Ilustración de ticket de ejemplo. No es una cámara activa.',
         image: true,

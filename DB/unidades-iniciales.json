@@ -1,0 +1,5 @@
+[
+  {"id":"e81577a0-13db-4eaf-9ea6-000000000001","nombre":"Unidad","simbolo":"u","dimension":"conteo","factor_base":1},
+  {"id":"e81577a0-13db-4eaf-9ea6-000000000002","nombre":"Kilogramo","simbolo":"kg","dimension":"masa","factor_base":1000},
+  {"id":"e81577a0-13db-4eaf-9ea6-000000000003","nombre":"Litro","simbolo":"L","dimension":"volumen","factor_base":1000}
+]

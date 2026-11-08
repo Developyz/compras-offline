@@ -1,7 +1,7 @@
 name: compras_offline
 description: Base Android de Canasta, con funcionamiento offline-first previsto.
 publish_to: none
-version: 0.3.0+3
+version: 0.4.0+4
 
 environment:
   sdk: '>=3.13.4 <4.0.0'
@@ -19,6 +19,7 @@ dependencies:
   sqlite3: 3.9.1
   path_provider: 2.1.6
   path: 1.9.1
+  uuid: 4.6.0
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +29,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/db/esquema_v3.json
+    - assets/db/esquema_v4.json
+    - assets/db/unidades_iniciales.json
