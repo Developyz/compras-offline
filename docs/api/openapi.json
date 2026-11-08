@@ -1,0 +1,6411 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Compras Offline — contrato propuesto",
+    "version": "0.2.0",
+    "description": "Diseño, sin servicio implementado. Java/Spring Boot en PC, Flutter en Android. Red local exclusivamente. Ver decisiones-v2.md para reglas transaccionales, validaciones de negocio, límites, retención y migraciones. No prueba conectividad ni autenticación implementada."
+  },
+  "servers": [
+    {
+      "url": "https://{direccion_local}:{puerto}/api/v1",
+      "description": "Plantilla local, no servidor desplegado",
+      "variables": {
+        "direccion_local": {
+          "default": "192.168.1.50"
+        },
+        "puerto": {
+          "default": "8443"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "DispositivoBearer": []
+    }
+  ],
+  "paths": {
+    "/estado": {
+      "get": {
+        "operationId": "consultarEstado",
+        "summary": "Comprobar servicio sin datos privados",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Estado"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/sincronizacion/operaciones": {
+      "post": {
+        "operationId": "enviarOperacion",
+        "summary": "Aplicar una operación idempotente, una transacción por raíz",
+        "responses": {
+          "200": {
+            "description": "Recibo original de una repetición idéntica",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recibo"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recibo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Operacion"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sincronizacion/cambios": {
+      "get": {
+        "operationId": "recibirCambios",
+        "summary": "recibirCambios",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaCambios"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            },
+            "description": "Cursor exclusivo confirmado localmente"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/sincronizacion/snapshots": {
+      "post": {
+        "operationId": "crearSnapshot",
+        "summary": "crearSnapshot",
+        "responses": {
+          "200": {
+            "description": "Solicitud existente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SnapshotPreparando"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Manifiesto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotPreparando"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitudSnapshot"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sincronizacion/snapshots/{id}": {
+      "get": {
+        "operationId": "consultarSnapshot",
+        "summary": "consultarSnapshot",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Manifiesto"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Preparación en curso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SnapshotPreparando"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 1,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/sincronizacion/snapshots/{id}/paginas/{numero}": {
+      "get": {
+        "operationId": "descargarPaginaSnapshot",
+        "summary": "descargarPaginaSnapshot",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaSnapshot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 9223372036854776000
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/sincronizacion/recibos/consulta": {
+      "post": {
+        "operationId": "consultarRecibos",
+        "summary": "consultarRecibos",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadosRecibos"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaRecibos"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalogo/contexto": {
+      "post": {
+        "operationId": "consultarContexto",
+        "summary": "Obtener raíces y cierre de dependencias; no modifica datos",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaContexto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaContexto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/compras": {
+      "get": {
+        "operationId": "listarCompras",
+        "summary": "listarCompras",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaCompras"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local inclusiva"
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local exclusiva"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/compras/{id}": {
+      "get": {
+        "operationId": "consultarCompra",
+        "summary": "consultarCompra",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompraLectura"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/productos": {
+      "get": {
+        "operationId": "listarProductos",
+        "summary": "listarProductos",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaProductos"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "buscar",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": ""
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/productos/{id}": {
+      "get": {
+        "operationId": "consultarProducto",
+        "summary": "consultarProducto",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductoLectura"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/canastas/{id}": {
+      "get": {
+        "operationId": "consultarCanasta",
+        "summary": "consultarCanasta",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanastaLectura"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/productos/{id}/precios": {
+      "get": {
+        "operationId": "listarPrecios",
+        "summary": "listarPrecios",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginaPrecios"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "description": ""
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local inclusiva"
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local exclusiva"
+          },
+          {
+            "name": "base",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "registrada",
+                "kg",
+                "l"
+              ]
+            },
+            "description": ""
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "description": ""
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/resumen-gastos": {
+      "get": {
+        "operationId": "resumirGastos",
+        "summary": "resumirGastos",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumenGastos"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "desde",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local inclusiva"
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "format": "date"
+            },
+            "description": "Fecha local exclusiva"
+          }
+        ]
+      }
+    },
+    "/vinculacion/solicitudes": {
+      "post": {
+        "operationId": "solicitarVinculacion",
+        "summary": "solicitarVinculacion",
+        "responses": {
+          "202": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VinculacionPendiente"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitudVinculacion"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/vinculacion/resultado": {
+      "post": {
+        "operationId": "consultarVinculacion",
+        "summary": "consultarVinculacion",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VinculacionResultado"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultaVinculacion"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/vinculacion/confirmaciones": {
+      "post": {
+        "operationId": "confirmarVinculacion",
+        "summary": "confirmarVinculacion",
+        "responses": {
+          "200": {
+            "description": "Respuesta correcta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VinculacionConfirmada"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error; ver codigo y campos. No confirma operaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Espera mínima en segundos.",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmacionVinculacion"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "DispositivoBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Token opaco aleatorio revocable; no JWT. Provisional solo para confirmar vinculación; activa para datos."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "mensaje": {
+                "type": "string",
+                "maxLength": 1000
+              },
+              "reintentable": {
+                "type": "boolean"
+              },
+              "campos": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "campo": {
+                      "type": "string",
+                      "maxLength": 200
+                    },
+                    "motivo": {
+                      "type": "string",
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "campo",
+                    "motivo"
+                  ]
+                },
+                "maxItems": 100
+              },
+              "version_actual": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              }
+            },
+            "required": [
+              "codigo",
+              "mensaje",
+              "reintentable",
+              "campos"
+            ]
+          },
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "error",
+          "solicitud_id"
+        ]
+      },
+      "Estado": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "servicio": {
+            "type": "string",
+            "enum": [
+              "disponible"
+            ]
+          },
+          "protocolo": {
+            "type": "string",
+            "enum": [
+              "v1"
+            ]
+          },
+          "version_esquema": {
+            "type": "integer",
+            "enum": [
+              2
+            ]
+          }
+        },
+        "required": [
+          "servicio",
+          "protocolo",
+          "version_esquema"
+        ]
+      },
+      "Marca": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "nombre"
+        ]
+      },
+      "Categoria": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "nombre"
+        ]
+      },
+      "Unidad": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "simbolo": {
+            "type": "string",
+            "maxLength": 12,
+            "minLength": 1
+          },
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "conteo",
+              "masa",
+              "volumen"
+            ]
+          },
+          "factor_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          }
+        },
+        "required": [
+          "nombre",
+          "simbolo",
+          "dimension",
+          "factor_base"
+        ]
+      },
+      "Producto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "marca_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "categoria_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "presentacion": {
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          },
+          "contenido_milesimas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "unidad_contenido_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "tipo_venta": {
+            "type": "string",
+            "enum": [
+              "unidad",
+              "peso",
+              "volumen"
+            ]
+          }
+        },
+        "required": [
+          "nombre",
+          "tipo_venta"
+        ]
+      },
+      "Codigo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "producto_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "codigo": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "formato": {
+            "type": "string",
+            "maxLength": 40,
+            "nullable": true
+          }
+        },
+        "required": [
+          "producto_id",
+          "codigo"
+        ]
+      },
+      "Comercio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "nombre"
+        ]
+      },
+      "Sucursal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "direccion": {
+            "type": "string",
+            "maxLength": 500,
+            "nullable": true
+          }
+        },
+        "required": [
+          "comercio_id",
+          "nombre"
+        ]
+      },
+      "ContextoHistorico": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre_producto_historico": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": true
+          },
+          "presentacion_historica": {
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          },
+          "contenido_milesimas_historico": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "unidad_contenido_simbolo_historico": {
+            "type": "string",
+            "maxLength": 12,
+            "nullable": true
+          },
+          "dimension_contenido_historica": {
+            "type": "string",
+            "enum": [
+              "conteo",
+              "masa",
+              "volumen",
+              null
+            ],
+            "nullable": true
+          },
+          "factor_base_contenido_historico": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "dimension_cantidad_historica": {
+            "type": "string",
+            "enum": [
+              "conteo",
+              "masa",
+              "volumen",
+              null
+            ],
+            "nullable": true
+          },
+          "factor_base_cantidad_historico": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre_producto_historico",
+          "presentacion_historica",
+          "contenido_milesimas_historico",
+          "unidad_contenido_simbolo_historico",
+          "dimension_contenido_historica",
+          "factor_base_contenido_historico",
+          "dimension_cantidad_historica",
+          "factor_base_cantidad_historico"
+        ]
+      },
+      "Detalle": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "numero_linea": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "producto_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "descripcion_ticket": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          },
+          "cantidad_milesimas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "unidad_cantidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "precio_unitario_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "importe_bruto_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "importe_final_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "contexto_historico": {
+            "$ref": "#/components/schemas/ContextoHistorico"
+          }
+        },
+        "required": [
+          "id",
+          "numero_linea",
+          "producto_id",
+          "descripcion_ticket",
+          "cantidad_milesimas",
+          "unidad_cantidad_id",
+          "precio_unitario_menor",
+          "importe_bruto_menor",
+          "descuento_menor",
+          "importe_final_menor",
+          "contexto_historico"
+        ]
+      },
+      "Descuento": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "detalle_compra_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "importe_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          }
+        },
+        "required": [
+          "id",
+          "detalle_compra_id",
+          "descripcion",
+          "importe_menor"
+        ]
+      },
+      "Compra": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "sucursal_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "canasta_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "fecha_compra": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "fecha_local": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "borrador",
+              "confirmada",
+              "anulada"
+            ]
+          },
+          "subtotal_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_productos_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_general_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "ajuste_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": -9223372036854776000,
+            "maximum": 9223372036854776000
+          },
+          "total_ticket_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "total_calculado_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "observaciones": {
+            "type": "string",
+            "maxLength": 2000,
+            "nullable": true
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detalle"
+            },
+            "maxItems": 1000,
+            "minItems": 1
+          },
+          "descuentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Descuento"
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "comercio_id",
+          "sucursal_id",
+          "canasta_id",
+          "fecha_compra",
+          "fecha_local",
+          "moneda",
+          "decimales_moneda",
+          "estado",
+          "subtotal_menor",
+          "descuento_productos_menor",
+          "descuento_general_menor",
+          "ajuste_menor",
+          "total_ticket_menor",
+          "total_calculado_menor",
+          "observaciones",
+          "detalles",
+          "descuentos"
+        ]
+      },
+      "ItemCanasta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "producto_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1
+          },
+          "cantidad_milesimas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "unidad_cantidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "precio_estimado_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "producto_id",
+          "descripcion",
+          "cantidad_milesimas",
+          "unidad_cantidad_id",
+          "precio_estimado_menor",
+          "moneda",
+          "decimales_moneda"
+        ]
+      },
+      "Canasta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "abierta",
+              "confirmada",
+              "cancelada"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemCanasta"
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "nombre",
+          "estado",
+          "items"
+        ]
+      },
+      "MarcaLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "CategoriaLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "UnidadLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "simbolo": {
+            "type": "string",
+            "maxLength": 12,
+            "minLength": 1
+          },
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "conteo",
+              "masa",
+              "volumen"
+            ]
+          },
+          "factor_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "simbolo",
+          "dimension",
+          "factor_base",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "ProductoLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "marca_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "categoria_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "presentacion": {
+            "type": "string",
+            "maxLength": 200,
+            "nullable": true
+          },
+          "contenido_milesimas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "unidad_contenido_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "tipo_venta": {
+            "type": "string",
+            "enum": [
+              "unidad",
+              "peso",
+              "volumen"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "tipo_venta",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "CodigoLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "producto_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "codigo": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1
+          },
+          "formato": {
+            "type": "string",
+            "maxLength": 40,
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "producto_id",
+          "codigo",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "ComercioLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "SucursalLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "direccion": {
+            "type": "string",
+            "maxLength": 500,
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "comercio_id",
+          "nombre",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "CanastaLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "abierta",
+              "confirmada",
+              "cancelada"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemCanasta"
+            },
+            "maxItems": 1000
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "nombre",
+          "estado",
+          "items",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "CompraLectura": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "sucursal_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "canasta_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "fecha_compra": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "fecha_local": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "borrador",
+              "confirmada",
+              "anulada"
+            ]
+          },
+          "subtotal_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_productos_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_general_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "ajuste_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": -9223372036854776000,
+            "maximum": 9223372036854776000
+          },
+          "total_ticket_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000,
+            "nullable": true
+          },
+          "total_calculado_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "observaciones": {
+            "type": "string",
+            "maxLength": 2000,
+            "nullable": true
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detalle"
+            },
+            "maxItems": 1000,
+            "minItems": 1
+          },
+          "descuentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Descuento"
+            },
+            "maxItems": 1000
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          },
+          "adjuntos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdjuntoMetadatos"
+            },
+            "maxItems": 1000
+          }
+        },
+        "required": [
+          "comercio_id",
+          "sucursal_id",
+          "canasta_id",
+          "fecha_compra",
+          "fecha_local",
+          "moneda",
+          "decimales_moneda",
+          "estado",
+          "subtotal_menor",
+          "descuento_productos_menor",
+          "descuento_general_menor",
+          "ajuste_menor",
+          "total_ticket_menor",
+          "total_calculado_menor",
+          "observaciones",
+          "detalles",
+          "descuentos",
+          "id",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en",
+          "adjuntos"
+        ]
+      },
+      "AdjuntoMetadatos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "compra_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "referencia_archivo": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "tipo_archivo": {
+            "type": "string",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ]
+          },
+          "tamano_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "sha256": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "origen": {
+            "type": "string",
+            "enum": [
+              "subida_usuario"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "actualizado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "eliminado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "compra_id",
+          "referencia_archivo",
+          "tipo_archivo",
+          "tamano_bytes",
+          "sha256",
+          "origen",
+          "version",
+          "creado_en",
+          "actualizado_en",
+          "eliminado_en"
+        ]
+      },
+      "GuardarMarca": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "marcas"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Marca"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoMarca": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "marcas"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/MarcaLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarCategoria": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "categorias"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Categoria"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoCategoria": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "categorias"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/CategoriaLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarUnidad": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "unidades_medida"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Unidad"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoUnidad": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "unidades_medida"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/UnidadLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarProducto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "productos"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Producto"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoProducto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "productos"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/ProductoLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarCodigo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "codigos_producto"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Codigo"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoCodigo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "codigos_producto"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/CodigoLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarComercio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "comercios"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Comercio"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoComercio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "comercios"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/ComercioLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarSucursal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "sucursales"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Sucursal"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoSucursal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "sucursales"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/SucursalLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarCanasta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "canastas"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Canasta"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoCanasta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "canastas"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/CanastaLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "GuardarCompra": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "compras"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "guardar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "datos": {
+            "$ref": "#/components/schemas/Compra"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base",
+          "datos"
+        ]
+      },
+      "RecursoCompra": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "compras"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "datos": {
+            "$ref": "#/components/schemas/CompraLectura"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id",
+          "datos"
+        ]
+      },
+      "Eliminar": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "marcas",
+              "categorias",
+              "unidades_medida",
+              "productos",
+              "codigos_producto",
+              "comercios",
+              "sucursales",
+              "canastas",
+              "compras"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "accion": {
+            "type": "string",
+            "enum": [
+              "eliminar"
+            ]
+          },
+          "version_base": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          }
+        },
+        "required": [
+          "operacion_id",
+          "dispositivo_id",
+          "entidad",
+          "entidad_id",
+          "accion",
+          "version_base"
+        ]
+      },
+      "Operacion": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GuardarMarca"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarCategoria"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarUnidad"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarProducto"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarCodigo"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarComercio"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarSucursal"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarCanasta"
+          },
+          {
+            "$ref": "#/components/schemas/GuardarCompra"
+          },
+          {
+            "$ref": "#/components/schemas/Eliminar"
+          }
+        ]
+      },
+      "Recurso": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/RecursoMarca"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoCategoria"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoUnidad"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoProducto"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoCodigo"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoComercio"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoSucursal"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoCanasta"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoCompra"
+          }
+        ]
+      },
+      "Recibo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "marcas",
+              "categorias",
+              "unidades_medida",
+              "productos",
+              "codigos_producto",
+              "comercios",
+              "sucursales",
+              "canastas",
+              "compras"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "aplicada"
+            ]
+          },
+          "confirmado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "operacion_id",
+          "entidad",
+          "entidad_id",
+          "version",
+          "estado",
+          "confirmado_en"
+        ]
+      },
+      "Cambio": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "marcas"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/MarcaLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "categorias"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/CategoriaLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "unidades_medida"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/UnidadLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "productos"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/ProductoLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "codigos_producto"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/CodigoLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "comercios"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/ComercioLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "sucursales"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/SucursalLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "canastas"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/CanastaLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "compras"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "guardar"
+                ]
+              },
+              "datos": {
+                "$ref": "#/components/schemas/CompraLectura"
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secuencia": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "entidad": {
+                "type": "string",
+                "enum": [
+                  "marcas",
+                  "categorias",
+                  "unidades_medida",
+                  "productos",
+                  "codigos_producto",
+                  "comercios",
+                  "sucursales",
+                  "canastas",
+                  "compras"
+                ]
+              },
+              "entidad_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "version": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 1,
+                "maximum": 9223372036854776000
+              },
+              "accion": {
+                "type": "string",
+                "enum": [
+                  "eliminar"
+                ]
+              },
+              "datos": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 36,
+                    "format": "uuid"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 1,
+                    "maximum": 9223372036854776000
+                  },
+                  "eliminado_en": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "eliminado_en"
+                ]
+              }
+            },
+            "required": [
+              "secuencia",
+              "entidad",
+              "entidad_id",
+              "version",
+              "accion",
+              "datos"
+            ]
+          }
+        ]
+      },
+      "PaginaCambios": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cambios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cambio"
+            },
+            "maxItems": 200
+          },
+          "siguiente_cursor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "hay_mas": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "cambios",
+          "siguiente_cursor",
+          "hay_mas"
+        ]
+      },
+      "SolicitudSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dias_locales": {
+            "type": "integer",
+            "enum": [
+              30
+            ]
+          }
+        },
+        "required": [
+          "solicitud_id",
+          "dias_locales"
+        ]
+      },
+      "SnapshotPreparando": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "snapshot_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "preparando"
+            ]
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "expira_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "estado",
+          "creado_en",
+          "expira_en"
+        ]
+      },
+      "HashPagina": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "numero": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "sha256": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "registros": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          }
+        },
+        "required": [
+          "numero",
+          "sha256",
+          "registros"
+        ]
+      },
+      "Manifiesto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "snapshot_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "servidor_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "listo"
+            ]
+          },
+          "version_esquema": {
+            "type": "integer",
+            "enum": [
+              2
+            ]
+          },
+          "cursor_corte": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "fecha_referencia": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "desde_inclusive": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "hasta_exclusive": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "dias_locales": {
+            "type": "integer",
+            "enum": [
+              30
+            ]
+          },
+          "zona_comercial": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "paginas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "hashes_paginas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HashPagina"
+            },
+            "maxItems": 100000
+          },
+          "conteos": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            }
+          },
+          "creado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "expira_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "servidor_id",
+          "estado",
+          "version_esquema",
+          "cursor_corte",
+          "fecha_referencia",
+          "desde_inclusive",
+          "hasta_exclusive",
+          "dias_locales",
+          "zona_comercial",
+          "paginas",
+          "hashes_paginas",
+          "conteos",
+          "creado_en",
+          "expira_en"
+        ]
+      },
+      "PaginaSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "snapshot_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "total_paginas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "conteos": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            }
+          },
+          "registros": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recurso"
+            },
+            "maxItems": 200
+          }
+        },
+        "required": [
+          "snapshot_id",
+          "numero",
+          "total_paginas",
+          "conteos",
+          "registros"
+        ]
+      },
+      "ConsultaRecibos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operacion_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "format": "uuid"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "operacion_ids"
+        ]
+      },
+      "ResultadoRecibo": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operacion_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "estado": {
+                "type": "string",
+                "enum": [
+                  "aplicada"
+                ]
+              },
+              "recibo": {
+                "$ref": "#/components/schemas/Recibo"
+              }
+            },
+            "required": [
+              "operacion_id",
+              "estado",
+              "recibo"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operacion_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "estado": {
+                "type": "string",
+                "enum": [
+                  "sin_recibo"
+                ]
+              }
+            },
+            "required": [
+              "operacion_id",
+              "estado"
+            ]
+          }
+        ]
+      },
+      "ResultadosRecibos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "resultados": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResultadoRecibo"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "resultados"
+        ]
+      },
+      "ReferenciaRaiz": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entidad": {
+            "type": "string",
+            "enum": [
+              "marcas",
+              "categorias",
+              "unidades_medida",
+              "productos",
+              "codigos_producto",
+              "comercios",
+              "sucursales",
+              "canastas",
+              "compras"
+            ]
+          },
+          "entidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "entidad",
+          "entidad_id"
+        ]
+      },
+      "ConsultaContexto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "raices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenciaRaiz"
+            },
+            "maxItems": 100,
+            "minItems": 1
+          },
+          "cursor": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          }
+        },
+        "required": [
+          "raices"
+        ]
+      },
+      "PaginaContexto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "recursos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recurso"
+            },
+            "maxItems": 200
+          },
+          "no_encontrados": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenciaRaiz"
+            },
+            "maxItems": 100
+          },
+          "siguiente_cursor": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "hay_mas": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "recursos",
+          "no_encontrados",
+          "siguiente_cursor",
+          "hay_mas"
+        ]
+      },
+      "ObservacionPrecio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "detalle_compra_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "compra_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "fecha_compra": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          },
+          "fecha_local": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "comercio_nombre": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "nullable": true
+          },
+          "cantidad_milesimas": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9223372036854776000
+          },
+          "unidad_cantidad_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "precio_unitario_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "importe_bruto_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "descuento_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "importe_final_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          },
+          "contexto_historico": {
+            "$ref": "#/components/schemas/ContextoHistorico"
+          },
+          "base": {
+            "type": "string",
+            "enum": [
+              "registrada",
+              "kg",
+              "l"
+            ]
+          },
+          "precio_normalizado_pyg": {
+            "type": "string",
+            "maxLength": 40,
+            "pattern": "^\\d+\\.\\d{6}$",
+            "nullable": true
+          },
+          "motivo_no_normalizable": {
+            "type": "string",
+            "enum": [
+              "contenido_desconocido",
+              "unidad_incompatible",
+              "contexto_historico_desconocido",
+              null
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "detalle_compra_id",
+          "compra_id",
+          "fecha_compra",
+          "fecha_local",
+          "comercio_id",
+          "comercio_nombre",
+          "cantidad_milesimas",
+          "unidad_cantidad_id",
+          "precio_unitario_menor",
+          "importe_bruto_menor",
+          "descuento_menor",
+          "importe_final_menor",
+          "moneda",
+          "decimales_moneda",
+          "contexto_historico",
+          "base",
+          "precio_normalizado_pyg",
+          "motivo_no_normalizable"
+        ]
+      },
+      "UltimoPrecio": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fecha_local": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "comercio_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid",
+            "nullable": true
+          },
+          "precio_unitario_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          }
+        },
+        "required": [
+          "fecha_local",
+          "comercio_id",
+          "precio_unitario_menor",
+          "moneda",
+          "decimales_moneda"
+        ]
+      },
+      "ProductoListado": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "producto": {
+            "$ref": "#/components/schemas/ProductoLectura"
+          },
+          "ultimo_precio": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fecha_local": {
+                "type": "string",
+                "maxLength": 10,
+                "format": "date"
+              },
+              "comercio_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid",
+                "nullable": true
+              },
+              "precio_unitario_menor": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0,
+                "maximum": 9223372036854776000
+              },
+              "moneda": {
+                "type": "string",
+                "enum": [
+                  "PYG"
+                ]
+              },
+              "decimales_moneda": {
+                "type": "integer",
+                "enum": [
+                  0
+                ]
+              }
+            },
+            "required": [
+              "fecha_local",
+              "comercio_id",
+              "precio_unitario_menor",
+              "moneda",
+              "decimales_moneda"
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "producto",
+          "ultimo_precio"
+        ]
+      },
+      "PaginaCompras": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompraLectura"
+            },
+            "maxItems": 200
+          },
+          "siguiente_cursor": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "hay_mas": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "siguiente_cursor",
+          "hay_mas"
+        ]
+      },
+      "PaginaProductos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductoListado"
+            },
+            "maxItems": 200
+          },
+          "siguiente_cursor": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "hay_mas": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "siguiente_cursor",
+          "hay_mas"
+        ]
+      },
+      "PaginaPrecios": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObservacionPrecio"
+            },
+            "maxItems": 200
+          },
+          "siguiente_cursor": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "hay_mas": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "siguiente_cursor",
+          "hay_mas"
+        ]
+      },
+      "ResumenGastos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "desde": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "hasta": {
+            "type": "string",
+            "maxLength": 10,
+            "format": "date"
+          },
+          "moneda": {
+            "type": "string",
+            "enum": [
+              "PYG"
+            ]
+          },
+          "decimales_moneda": {
+            "type": "integer",
+            "enum": [
+              0
+            ]
+          },
+          "total_gastado_menor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "cantidad_compras": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9223372036854776000
+          },
+          "fuente": {
+            "type": "string",
+            "enum": [
+              "pc"
+            ]
+          },
+          "calculado_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "desde",
+          "hasta",
+          "moneda",
+          "decimales_moneda",
+          "total_gastado_menor",
+          "cantidad_compras",
+          "fuente",
+          "calculado_en"
+        ]
+      },
+      "SolicitudVinculacion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "nombre_dispositivo": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "sesion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "secreto_temporal": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 43,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          }
+        },
+        "required": [
+          "solicitud_id",
+          "dispositivo_id",
+          "nombre_dispositivo",
+          "sesion_id",
+          "secreto_temporal"
+        ]
+      },
+      "VinculacionPendiente": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "pendiente_autorizacion"
+            ]
+          },
+          "token_consulta": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 43,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "expira_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "solicitud_id",
+          "estado",
+          "token_consulta",
+          "expira_en"
+        ]
+      },
+      "ConsultaVinculacion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "token_consulta": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 43,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          }
+        },
+        "required": [
+          "solicitud_id",
+          "token_consulta"
+        ]
+      },
+      "VinculacionResultado": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "solicitud_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "estado": {
+                "type": "string",
+                "enum": [
+                  "pendiente_autorizacion",
+                  "rechazada",
+                  "expirada"
+                ]
+              }
+            },
+            "required": [
+              "solicitud_id",
+              "estado"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "solicitud_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "estado": {
+                "type": "string",
+                "enum": [
+                  "autorizada"
+                ]
+              },
+              "dispositivo_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "servidor_id": {
+                "type": "string",
+                "maxLength": 36,
+                "format": "uuid"
+              },
+              "credencial_dispositivo": {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 43,
+                "pattern": "^[A-Za-z0-9_-]+$"
+              },
+              "expira_en": {
+                "type": "string",
+                "maxLength": 24,
+                "format": "date-time",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+              }
+            },
+            "required": [
+              "solicitud_id",
+              "estado",
+              "dispositivo_id",
+              "servidor_id",
+              "credencial_dispositivo",
+              "expira_en"
+            ]
+          }
+        ]
+      },
+      "ConfirmacionVinculacion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "solicitud_id"
+        ]
+      },
+      "VinculacionConfirmada": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "confirmada"
+            ]
+          },
+          "dispositivo_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "servidor_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "solicitud_id",
+          "estado",
+          "dispositivo_id",
+          "servidor_id"
+        ]
+      },
+      "QRVinculacion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "compras_offline_vinculacion"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "enum": [
+              1
+            ]
+          },
+          "servidor_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "url_base": {
+            "type": "string",
+            "maxLength": 500,
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "huella_certificado_sha256": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sesion_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "secreto_temporal": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 43,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "expira_en": {
+            "type": "string",
+            "maxLength": 24,
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        },
+        "required": [
+          "tipo",
+          "version",
+          "servidor_id",
+          "url_base",
+          "huella_certificado_sha256",
+          "sesion_id",
+          "secreto_temporal",
+          "expira_en"
+        ]
+      },
+      "QRDireccion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "compras_offline_direccion"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "enum": [
+              1
+            ]
+          },
+          "servidor_id": {
+            "type": "string",
+            "maxLength": 36,
+            "format": "uuid"
+          },
+          "url_base": {
+            "type": "string",
+            "maxLength": 500,
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "huella_certificado_sha256": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "tipo",
+          "version",
+          "servidor_id",
+          "url_base",
+          "huella_certificado_sha256"
+        ]
+      }
+    }
+  }
+}
