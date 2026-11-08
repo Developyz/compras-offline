@@ -1,5 +1,7 @@
 # API v1 — operaciones y contratos propuestos
 
+**Revisión estructural vigente:** [OpenAPI 0.2.0](openapi.json), [decisiones v2](decisiones-v2.md) y [ejemplos conformes](ejemplos-v2.json). Este texto conserva el diseño narrativo previo. Donde un detalle difiera, consultar esos archivos: esquema de almacenamiento 2, campos de contexto histórico, normalización decimal y límites precisados.
+
 Estado: borrador de diseño para revisión. No hay API ejecutable, controladores, conexiones ni autenticación implementados. Las rutas y reglas de este documento son propuestas; no sustituyen una confirmación del alcance por parte del usuario.
 
 ## 1. Ubicación y propósito
@@ -259,7 +261,7 @@ Los resúmenes almacenados no son descuentos adicionales. ajuste requiere justif
 
 ## 10. Diferencias con los scripts y próximos pasos
 
-No se modificó el SQL en esta fase. Los scripts iniciales aún tienen DEFAULT 2 para decimales_moneda de compras: al implementar PYG debe enviarse 0 explícitamente y preparar la migración/corrección de ese valor predeterminado. No multiplicar importes existentes por 100 ni reinterpretarlos sin revisar sus datos.
+Los scripts iniciales v1 conservan DEFAULT 2; las [migraciones v2](../../DB/migrations/README.md) ya cambian ese valor predeterminado a 0. Enviar PYG/escala 0 explícitamente. Los registros anteriores con escala distinta requieren revisión. No multiplicar importes existentes por 100 ni reinterpretarlos sin revisar sus datos.
 
 Antes de pasar a implementación:
 1. Revisar y confirmar este mapa de operaciones.
