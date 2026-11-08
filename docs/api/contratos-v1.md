@@ -6,7 +6,7 @@ Estado: borrador de diseño para revisión. No hay API ejecutable, controladores
 
 Spring Boot en la PC expone la API; Flutter la consume mediante un cliente HTTP separado de las vistas y modelos. Solo el servidor accede a PostgreSQL. La app guarda y consulta su trabajo cotidiano en SQLite y puede funcionar con la PC apagada.
 
-Base lógica: /api/v1. La dirección, puerto, red local o acceso remoto y certificados se definirán al configurar la PC. No se fija localhost como dirección del celular: allí localhost sería el propio teléfono.
+Base lógica: /api/v1. Conexión confirmada: únicamente dentro de la misma red local Wi-Fi. La PC también puede estar conectada por Ethernet al mismo router si ambos equipos tienen comunicación local. No se contempla acceso remoto, servidor público ni apertura de puertos del router hacia internet. La dirección local, puerto y certificados se definirán al configurar la PC. No se fija localhost como dirección del celular: allí localhost sería el propio teléfono.
 
 API de estilo REST con cuerpos JSON UTF-8. La autenticación será obligatoria en operaciones de datos; no exponer información familiar ni permitir escrituras solo por conocer la URL. Propuesta de cabecera: Authorization: Bearer <credencial-del-dispositivo>. Vinculación, emisión, renovación, revocación y transporte seguro están pendientes de diseñar. No guardar credenciales en GitHub.
 
@@ -263,7 +263,7 @@ No se modificó el SQL en esta fase. Los scripts iniciales aún tienen DEFAULT 2
 
 Antes de pasar a implementación:
 1. Revisar y confirmar este mapa de operaciones.
-2. Cerrar vinculación/autenticación y red local/remota.
+2. Cerrar vinculación/autenticación y configuración del transporte dentro de la red local ya confirmada.
 3. Diseñar snapshot inicial, retención, conflictos y almacenamiento de revisiones pendientes.
 4. Completar DTOs/esquemas exactos por entidad, límites, validaciones y ejemplos de compra completa en OpenAPI.
 5. Definir preservación histórica de presentación y redondeo de normalización.
@@ -271,3 +271,14 @@ Antes de pasar a implementación:
 7. Elegir librerías y versiones, y solo entonces crear los controladores y clientes reales.
 
 Este documento describe el contrato propuesto; no demuestra conectividad, seguridad implementada, sincronización funcional ni una especificación OpenAPI ya validada.
+
+
+## Decisión confirmada: conexión local
+
+Solo se sincronizará cuando celular y PC puedan comunicarse dentro de la misma red local. No hace falta que el proveedor de internet esté disponible si la red local funciona. Compartir el nombre de Wi-Fi no garantiza conectividad: redes de invitados o aislamiento de clientes pueden impedirla.
+
+La PC y Spring Boot deben estar encendidos y accesibles. Fuera de esa red, la app sigue con SQLite y conserva los pendientes. La sincronización automática se intentará cuando el sistema operativo permita ejecutarla; no se promete ejecución inmediata con la app cerrada o el teléfono en suspensión.
+
+Propuesta de configuración para revisar al implementar: reserva DHCP para la PC, puerto de API configurable y regla de firewall de Windows limitada a la red privada local. PostgreSQL permanecerá accesible solo para el servidor en la PC; no abrir su puerto al celular. No se configura nada de esto durante la etapa documental.
+
+La vinculación inicial deberá identificar y autorizar el celular. Propuesta pendiente: QR mostrado por la PC con dirección local, identidad verificable del servidor y código temporal de un solo uso. No incluir credenciales permanentes en el QR. Definir transporte cifrado y validación del servidor sin desactivar comprobaciones TLS. La red local no reemplaza la autorización.
