@@ -1,4 +1,4 @@
-# Prototipo visual de Android — versión 01
+# Prototipo visual de Android — versión 02
 
 ## Abrir
 
@@ -12,8 +12,10 @@ Descargar `index.html` y abrirlo con un navegador. Es autocontenido: no requiere
 4. Revisión de compra: datos de lectura simulados, descuentos y total.
 5. Historial: listado de compras ficticias.
 6. Detalle: renglones, descuento, total y estado ilustrativo.
+7. Productos: catálogo ficticio de arroz, leche y manzana con búsqueda visual.
+8. Detalle del producto: gráfico de precios, variación frente al registro anterior, precio equivalente por kg/litro e historial de observaciones.
 
-En teléfono se muestra navegación inferior con Inicio, Canasta, Cámara e Historial. La cámara es la acción principal, con un botón circular destacado en el centro. En escritorio se agrega un índice lateral. Los botones permiten recorrer el flujo y el botón Atrás del navegador funciona mediante rutas hash.
+En teléfono se muestra navegación inferior con Inicio, Canasta, Cámara, Productos e Historial. La cámara es la acción principal, con un botón circular destacado en el centro. En escritorio se agrega un índice lateral. Los botones permiten recorrer el flujo y el botón Atrás del navegador funciona mediante rutas hash.
 
 ## Alcance y límites
 
@@ -23,7 +25,7 @@ No implementa modelos de negocio, ViewModels, reglas de cálculo, edición, alma
 
 ## Pendientes comentados en index.html
 
-Cada sección tiene un comentario TODO con sus futuras responsabilidades. Al implementar Flutter, separar las seis Views; enlazarlas a ViewModels y servicios; acceder a SQLite mediante repositorios y a la API mediante un cliente HTTP independiente. Las Views y modelos de datos no deben abrir conexiones.
+Cada sección tiene un comentario TODO con sus futuras responsabilidades. Al implementar Flutter, separar las ocho Views; enlazarlas a ViewModels y servicios; acceder a SQLite mediante repositorios y a la API mediante un cliente HTTP independiente. Las Views y modelos de datos no deben abrir conexiones.
 
 La conexión a PostgreSQL pertenece exclusivamente al servidor Java/Spring Boot y se configurará en la PC. No hay credenciales ni direcciones de servidor en este prototipo.
 
@@ -31,4 +33,13 @@ La captura desde la app será temporal y se eliminará al confirmar o cancelar. 
 
 ## Validación
 
-Se verifican sintaxis JavaScript, enlaces internos, IDs de pantallas y ausencia de llamadas de red y almacenamiento. La revisión visual en navegador se indicará por separado según la disponibilidad del entorno.
+Se verifican sintaxis JavaScript, enlaces internos, IDs de pantallas y ausencia de llamadas de red y almacenamiento. En la versión 02 se comprobaron las ocho rutas, los tres gráficos y tablas, el filtro de catálogo, porcentajes y equivalencias mediante DOM simulado, además de sintaxis JavaScript y referencias HTML. No se realizó revisión visual en navegador: la herramienta de control de navegador no está disponible en este entorno.
+
+
+## Historial de precios del prototipo
+
+Los cuatro puntos de cada gráfico son observaciones ficticias entre el 12 de octubre y el 8 de noviembre de 2026. Se muestran precios antes de descuentos por paquete de 500 g (arroz), caja de 1 L (leche) y kg (manzana). No se prorratea el descuento general de la compra. El último precio coincide con los ejemplos anteriores. Las líneas solo unen observaciones; no representan precios en vivo ni valores conocidos entre compras.
+
+Los botones bajo el gráfico muestran fecha, comercio y precio del punto seleccionado. El catálogo y las series son ejemplos de diseño independientes del resumen de gastos; sus registros anteriores no se agregan como compras al historial del prototipo.
+
+No se implementaron nuevas consultas, tablas, ViewModels ni conexiones. Las observaciones históricas de más de 30 días y los informes mensuales completos siguen sujetos a la definición de acceso a la PC o resúmenes locales.
