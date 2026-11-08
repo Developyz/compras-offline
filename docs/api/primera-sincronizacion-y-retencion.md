@@ -1,5 +1,8 @@
 # Primera sincronización y conservación local de 30 días
 
+**Ampliación v2:** ver [contrato OpenAPI](openapi.json), [reglas complementarias](decisiones-v2.md) y [migraciones SQL](../../DB/migrations/README.md). El texto siguiente conserva el razonamiento previo; los campos exactos y parámetros precisados están en esos documentos. Las migraciones ya están escritas y comprobadas; la lógica de servicios sigue sin implementar.
+
+
 Estado: diseño propuesto para revisión. Se desarrolla la decisión de sincronizar por red local después de vincular por QR. No hay implementación de red, limpieza ni nuevas migraciones SQL en este documento.
 
 ## 1. Reglas que no pueden romperse
