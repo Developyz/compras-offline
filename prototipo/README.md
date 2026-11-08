@@ -1,4 +1,4 @@
-# Prototipo visual de Android — versión 02
+# Prototipo visual de Android — versión 03
 
 ## Abrir
 
@@ -9,11 +9,12 @@ Descargar `index.html` y abrirlo con un navegador. Es autocontenido: no requiere
 1. Inicio: resumen ilustrativo de los últimos 30 días, canasta y última compra.
 2. Canasta: productos y total estimado.
 3. Captura de ticket: ilustración y acceso al ticket de ejemplo.
-4. Revisión de compra: datos de lectura simulados, descuentos y total.
+4. Revisión de compra: escenarios de lectura correcta, datos dudosos y diferencia de total. Los botones de ejemplo permiten resolver advertencias antes de ver la confirmación.
 5. Historial: listado de compras ficticias.
 6. Detalle: renglones, descuento, total y estado ilustrativo.
 7. Productos: catálogo ficticio de arroz, leche y manzana con búsqueda visual.
 8. Detalle del producto: gráfico de precios, variación frente al registro anterior, precio equivalente por kg/litro e historial de observaciones.
+9. Estados de pantalla: selector de escenarios sin compras, canasta vacía, ticket ilegible, guardada localmente, pendiente, error de sincronización y sincronización confirmada.
 
 En teléfono se muestra navegación inferior con Inicio, Canasta, Cámara, Productos e Historial. La cámara es la acción principal, con un botón circular destacado en el centro. En escritorio se agrega un índice lateral. Los botones permiten recorrer el flujo y el botón Atrás del navegador funciona mediante rutas hash.
 
@@ -25,7 +26,7 @@ No implementa modelos de negocio, ViewModels, reglas de cálculo, edición, alma
 
 ## Pendientes comentados en index.html
 
-Cada sección tiene un comentario TODO con sus futuras responsabilidades. Al implementar Flutter, separar las ocho Views; enlazarlas a ViewModels y servicios; acceder a SQLite mediante repositorios y a la API mediante un cliente HTTP independiente. Las Views y modelos de datos no deben abrir conexiones.
+Cada sección tiene un comentario TODO con sus futuras responsabilidades. Al implementar Flutter, separar las Views de negocio y representar los escenarios de estado en sus pantallas correspondientes; el selector de escenarios es solo una herramienta de revisión del prototipo. Se deberán; enlazarlas a ViewModels y servicios; acceder a SQLite mediante repositorios y a la API mediante un cliente HTTP independiente. Las Views y modelos de datos no deben abrir conexiones.
 
 La conexión a PostgreSQL pertenece exclusivamente al servidor Java/Spring Boot y se configurará en la PC. No hay credenciales ni direcciones de servidor en este prototipo.
 
@@ -43,3 +44,18 @@ Los cuatro puntos de cada gráfico son observaciones ficticias entre el 12 de oc
 Los botones bajo el gráfico muestran fecha, comercio y precio del punto seleccionado. El catálogo y las series son ejemplos de diseño independientes del resumen de gastos; sus registros anteriores no se agregan como compras al historial del prototipo.
 
 No se implementaron nuevas consultas, tablas, ViewModels ni conexiones. Las observaciones históricas de más de 30 días y los informes mensuales completos siguen sujetos a la definición de acceso a la PC o resúmenes locales.
+
+
+## Cierre visual: revisión y estados
+
+Se puede acceder al selector de estados desde Inicio. En Revisión, el selector de lectura permite probar advertencias de producto poco legible, cantidad dudosa y total que no coincide. La confirmación visual se bloquea hasta resolver los ejemplos. Los valores son prefijados: no se implementaron OCR, reglas reales de negocio ni edición libre.
+
+En la implementación real, las advertencias pertenecerán al estado del ViewModel y los datos se corregirán mediante controles de edición. Guardar debe confirmar primero la transacción local. Sincronizada requiere el recibo del servidor. Un envío interrumpido no equivale a compra perdida y sus reintentos deben reutilizar el identificador de operación.
+
+El selector de estados es una herramienta de revisión: las variantes vacías no sustituyen el catálogo ficticio en las otras pantallas. Simular reintento vuelve al estado pendiente, sin ejecutar solicitudes ni declarar éxito.
+
+La expresión «estado de cuenta» se interpretó provisionalmente como estados del registro y sincronización, conforme a la mejora que se venía priorizando; no se implementó un estado financiero nuevo. Queda pendiente aclarar si el usuario se refería al resumen de gastos.
+
+Se verificaron nueve destinos, siete estados y el bloqueo/desbloqueo de la revisión con DOM simulado, además de sintaxis y referencias internas. Sigue pendiente la inspección visual en navegador.
+
+Presupuesto mensual, gastos por categoría y repetir compra quedan para futuras etapas. Antes de implementar conexiones, la siguiente fase de definición es cerrar operaciones y contratos de API y elegir las librerías pendientes.
