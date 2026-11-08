@@ -1,3 +1,5 @@
+> Actualización 0.5.0+7: cámara y lectura asistida de tickets integradas; ver [alcance y límites](../docs/camara-y-lectura-inicial.md). Aún requieren prueba física y resolución de firma de actualización. Las secciones siguientes conservan antecedentes de etapas anteriores.
+
 # Canasta — Flutter con guardado local
 
 Flutter **3.47.5 / Dart 3.13.4**, versión **0.4.1+5**. El arranque abre SQLite privado y prepara una sesión con identidad persistente. Cámara → **Registrar a mano** permite introducir productos, cantidades, precios, descuento general, total y fecha/hora. Revisión valida y guarda compra + cola + recibo en una transacción; Historial muestra compras locales.

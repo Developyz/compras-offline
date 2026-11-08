@@ -34,7 +34,7 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Android ya permite registrar una compra manual, revisarla y guardar compra + cola + recibo en SQLite, con historial local y reintentos sin duplicar la operación. Inicio ya muestra gastos mensuales reales, resumen local y últimas compras. Canasta, Productos y Estados conservan su prototipo identificado; cámara/OCR y sincronización siguen pendientes. Ver [flujo y captura](docs/guardado-local-en-pantalla.md).
+Android ya permite registrar una compra manual, revisarla y guardar compra + cola + recibo en SQLite, con historial local y reintentos sin duplicar la operación. Inicio ya muestra gastos mensuales reales, resumen local y últimas compras. Canasta, Productos y Estados conservan su prototipo identificado; la cámara y lectura asistida inicial están implementadas, pendientes de prueba física; la sincronización sigue pendiente. Ver [flujo y captura](docs/guardado-local-en-pantalla.md).
 
 Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLite v4. Las migraciones se comprobaron con preservación de datos. Spring Boot mantiene su base mínima sin HTTP ni persistencia; todavía no existe una API en ejecución.
 
@@ -52,6 +52,7 @@ Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLit
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Cámara y lectura asistida inicial](docs/camara-y-lectura-inicial.md)
 - [Modo oscuro y captura](docs/modo-oscuro.md)
 - [Inicio con gastos reales](docs/inicio-gastos-reales.md)
 - [Guardado local en pantalla](docs/guardado-local-en-pantalla.md)

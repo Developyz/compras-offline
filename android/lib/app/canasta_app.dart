@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../demo/demo_data.dart';
 import 'sesion_local.dart';
+import '../features/tickets/views/camara_ticket_view.dart';
+import '../features/tickets/viewmodels/lectura_ticket.dart';
 import '../presentation/widgets/tema_app.dart';
 import '../features/inicio/views/inicio_local_view.dart';
 import '../features/tickets/views/registro_manual_view.dart';
@@ -81,17 +83,26 @@ class _CanastaAppState extends State<CanastaApp> {
             2,
             Builder(
               builder: (context) => CapturaView(
+                onAbrirCamara: sesionLocal == null
+                    ? null
+                    : () => Navigator.of(context).pushNamed('/camara'),
                 onRegistrarManual: sesionLocal == null
                     ? null
                     : () => Navigator.of(context).pushNamed('/manual'),
               ),
             ),
           ),
+          '/camara' => (2, const CamaraTicketView()),
           '/manual' => (
             2,
             sesionLocal == null
                 ? const CapturaView()
-                : RegistroManualView(sesionLocal!),
+                : RegistroManualView(
+                    sesionLocal!,
+                    lectura: settings.arguments is LecturaTicket
+                        ? settings.arguments! as LecturaTicket
+                        : null,
+                  ),
           ),
           '/revision' => (
             2,

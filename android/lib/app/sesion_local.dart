@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:path_provider/path_provider.dart';
+
+import '../services/captura/ticket_temporal.dart';
+
 import 'package:drift/drift.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
@@ -24,8 +28,10 @@ class SesionLocal {
     for (final u in unidades) u.id: u.simbolo,
   };
 
-  static Future<SesionLocal> abrirPrivada() async =>
-      abrir(await BaseLocal.abrirPrivada());
+  static Future<SesionLocal> abrirPrivada() async {
+    await TicketTemporal.limpiarHuerfanas(await getTemporaryDirectory());
+    return abrir(await BaseLocal.abrirPrivada());
+  }
 
   /// Transfiere propiedad de la base a la sesión; también cierra si falla.
   static Future<SesionLocal> abrir(
