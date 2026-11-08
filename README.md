@@ -41,12 +41,13 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - `DB/`: scripts iniciales de PostgreSQL y SQLite e instrucciones.
 - `docs/`: decisiones y diseño, incluyendo el borrador de API en `docs/api/`.
 - `prototipo/`: pantallas HTML navegables con datos ficticios y comentarios de implementación pendiente.
-- `android/`: ubicación prevista de la aplicación Flutter; todavía no creada.
-- `server/`: ubicación prevista del servidor Spring Boot; todavía no creada.
+- `android/`: instrucciones del cliente Flutter; proyecto ejecutable aún no generado.
+- `server/`: instrucciones del servidor Spring Boot; proyecto ejecutable aún no generado.
 
 ## Documentación
 
 - [Arquitectura y stack](docs/arquitectura-y-stack.md)
+- [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Registro de tickets e imágenes](docs/registro-de-tickets.md)
 - [Objetivo y datos de compras](docs/objetivo-y-datos-de-compras.md)
 - [Catálogo de productos](docs/catalogo-de-productos.md)
