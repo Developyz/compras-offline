@@ -18,13 +18,13 @@ Aplicación Android para organizar compras, comparar precios y planificar la can
 - General: offline-first con sincronización cliente-servidor. El celular es el cliente y la PC es el servidor.
 - Android: MVVM con repositorios.
 - Servidor: controladores → servicios → repositorios → PostgreSQL.
-- La API se implementará dentro de Spring Boot en la PC. Flutter se comunicará con ella mediante HTTP; no accederá directamente a PostgreSQL. REST con JSON es la propuesta; el primer borrador de operaciones está en [contratos de API v1](docs/api/contratos-v1.md), todavía pendiente de completar y confirmar.
+- La API se implementará dentro de Spring Boot en la PC. Flutter se comunicará con ella mediante HTTP; no accederá directamente a PostgreSQL. REST con JSON: el [contrato OpenAPI propuesto](docs/api/openapi.json) y las [reglas v2](docs/api/decisiones-v2.md) formalizan las operaciones para revisión, sin implementación.
 
 Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades, decisiones y pendientes.
 
 ## Datos y tickets
 
-- Moneda confirmada: guaraní paraguayo (PYG / ₲), sin decimales. El ajuste pendiente del valor predeterminado SQL está señalado en el borrador de API.
+- Moneda confirmada: guaraní paraguayo (PYG / ₲), sin decimales. Las migraciones v2 ajustan el valor predeterminado SQL sin convertir importes anteriores.
 
 - El celular conserva los últimos 30 días de compras; la PC mantiene el historial completo. No eliminar compras pendientes de sincronización por antigüedad.
 - Registrar fecha, productos, cantidades, precios, descuentos y total, además del comercio y datos de producto disponibles para comparar precios.
@@ -34,7 +34,7 @@ Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades,
 
 ## Estado
 
-Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. Se comprobó el esquema en PostgreSQL 16 y SQLite. Aún no hay app ejecutable, API ni sincronización implementadas.
+Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. La ampliación [v2](DB/migrations/README.md) añade vinculación, snapshots y conflictos: 24 tablas en PostgreSQL y 21 en SQLite. Se comprobó la ejecución y preservación de datos en ambos motores. Aún no hay app ejecutable, API ni sincronización implementadas.
 
 ## Estructura
 
@@ -52,10 +52,13 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - [Catálogo de productos](docs/catalogo-de-productos.md)
 - [Base de datos](DB/README.md)
 - [Contratos de API v1 — borrador](docs/api/contratos-v1.md)
+- [OpenAPI propuesto](docs/api/openapi.json)
+- [Reglas de API y almacenamiento v2](docs/api/decisiones-v2.md)
+- [Migraciones SQL v2](DB/migrations/README.md)
 - [Prototipo visual Android](prototipo/README.md)
 
 ## Próximas definiciones
 
-Versiones del stack, librerías complementarias, contratos de API, autenticación y vinculación, conexión local o remota, conflictos de sincronización y política de adjuntos. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
+Revisar el contrato propuesto, elegir versiones/librerías, implementar y probar las reglas de vinculación, TLS y sincronización, y diseñar transferencia/retención de adjuntos. La conexión está confirmada exclusivamente por red local y la vinculación por QR. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.
