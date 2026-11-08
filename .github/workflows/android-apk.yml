@@ -26,6 +26,7 @@ jobs:
           echo "$GITHUB_WORKSPACE/_flutter/bin" >> "$GITHUB_PATH"
           echo "JAVA_HOME=$JAVA_HOME_21_X64" >> "$GITHUB_ENV"
           echo "$JAVA_HOME_21_X64/bin" >> "$GITHUB_PATH"
+      - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407
       - name: Preparar SDK Android
         run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358'
       - name: Validar y compilar ARM64
