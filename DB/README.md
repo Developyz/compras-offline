@@ -1,3 +1,5 @@
+> SQLite tiene ahora una ampliación local v3 para recibos persistentes: ejecutar `migrations/sqlite-v003.sql` después de v2 produce 22 tablas. PostgreSQL conserva 24. Ver [adaptador y validación](../docs/sqlite-compras-y-cola.md). Las instrucciones siguientes describen las bases v1/v2.
+
 # Base de datos — esquema inicial y migraciones v2
 
 El diseño vigente incluye [migraciones v2](migrations/README.md). Para una instalación nueva ejecutar el script inicial del motor y luego su migración v2; para una base v1 ejecutar solo la migración. El resultado son **24 tablas PostgreSQL y 21 SQLite**. Las instrucciones de abajo describen la base v1 y deben completarse con ese segundo paso.

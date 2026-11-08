@@ -1,3 +1,5 @@
+> Actualización: ya existe un [adaptador SQLite de compras](sqlite-compras-y-cola.md) con dependencias resueltas y pruebas. El guardado en pantalla sigue pendiente. El resto de este documento conserva su etapa de referencia.
+
 # Repositorios y ViewModel de revisión
 
 La pantalla de revisión ya utiliza las reglas de dominio mediante `RevisionTicketViewModel`. Sigue mostrando datos de ejemplo; no hay persistencia, cámara, OCR ni conexión con la PC.

@@ -1,3 +1,5 @@
+> Actualización: ya existe un [adaptador SQLite de compras](sqlite-compras-y-cola.md) con dependencias resueltas y pruebas. El guardado en pantalla sigue pendiente. El resto de este documento conserva su etapa de referencia.
+
 # Herramientas y versiones — propuesta para preparación
 
 **Actualización de ejecución:** las bases mínimas ya se generaron y se prepararon Flutter 3.47.5 / Dart 3.13.4, JDK Temurin 21.0.13+9 y Maven 3.10.0 en el entorno Linux temporal. Ver [resultados](validacion-proyectos-base.md). La lista completa de plugins de este documento sigue siendo candidata y no se añadió a la base todavía. La PC Windows permanece sin comprobar.

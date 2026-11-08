@@ -32,7 +32,7 @@ final class ReciboGuardadoLocal {
   final String operacionId;
 }
 
-/// Contratos sin implementación. null significa ausencia comprobada, nunca error.
+/// Contratos independientes del motor. null significa ausencia comprobada, nunca error.
 /// Los errores de acceso deben propagarse. Validar referencias antes de escribir.
 /// guardarYEncolar: transacción atómica, recibo persistido y reintento idempotente;
 /// mismo ID con otro contenido debe rechazarse. No borrar pendientes/conflictos.
