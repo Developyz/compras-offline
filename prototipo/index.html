@@ -15,6 +15,33 @@
 .camera-circle svg{width:27px;height:27px}
 .bottom .camera-primary[aria-current=page]{background:transparent}
 .bottom .camera-primary[aria-current=page] .camera-circle{background:var(--lime);color:var(--green)}
+
+/* Cinco accesos: cámara en el centro, productos a su derecha. */
+.bottom{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 70px minmax(0,1fr) minmax(0,1fr)}
+.product-search{display:block;width:100%;padding:13px 15px;margin:8px 0 18px;border:1px solid var(--line);border-radius:13px;background:white;color:var(--ink)}
+.catalogue-card{width:100%;text-align:left;display:block;color:var(--ink);background:white}
+.catalogue-card .row{align-items:flex-start}
+.catalogue-card .product-name{font-size:16px}
+.product-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.stat-box{border:1px solid var(--line);background:white;border-radius:16px;padding:16px}
+.stat-box .stat-value{font-size:25px;line-height:1.3;letter-spacing:-.8px;font-weight:750;margin:5px 0}
+.trend-up{color:#975e2b}.trend-down{color:var(--green)}
+.chart-wrap{padding:18px 14px;border:1px solid var(--line);border-radius:18px;background:white;margin-top:15px}
+.price-chart{display:block;width:100%;height:auto;fill:none;stroke:none;overflow:visible}
+.price-chart text{fill:var(--muted);font:11px system-ui,sans-serif;stroke:none}
+.price-chart .gridline{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.price-chart .trendline{stroke:var(--green);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;fill:none}
+.price-chart .chart-point{fill:var(--paper);stroke:var(--green);stroke-width:2}
+.chart-observation{margin-top:7px;padding:12px;background:var(--soft);border-radius:12px;font-size:13px;min-height:64px}
+.observation-buttons{display:flex;gap:7px;margin-top:12px}
+.observation-buttons button{flex:1;border-radius:9px;min-height:40px;padding:7px 4px;background:var(--soft);color:var(--green);font-size:11px}
+.observation-buttons button[aria-pressed=true]{background:var(--green);color:white}
+.price-history{width:100%;border-collapse:collapse;font-size:12px}
+.price-history th{text-align:left;color:var(--muted);font-weight:500}
+.price-history th,.price-history td{padding:12px 5px;border-bottom:1px solid var(--line)}
+.price-history td:last-child,.price-history th:last-child{text-align:right;white-space:nowrap}
+[hidden]{display:none!important}
+@media(max-width:380px){.view{padding-inline:16px}.bottom{padding-inline:5px;grid-template-columns:1fr 1fr 64px 1fr 1fr}.bottom button{font-size:10px;padding-inline:2px}.stat-box{padding:12px}.stat-box .stat-value{font-size:22px}}
 </style>
 </head>
 <body>
@@ -33,7 +60,7 @@
 <symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/></symbol>
 </defs></svg>
 <div class="shell">
-<aside class="aside"><div class="brand"><span class="brand-icon"><svg><use href="#i-bag"/></svg></span>canasta.</div><h1>Tu compra,<br>más clara.</h1><p>Un recorrido por la app que estamos diseñando, con datos de ejemplo.</p><nav class="steps" aria-label="Todas las pantallas"><button data-go="inicio">01 · Inicio</button><button data-go="canasta">02 · Canasta</button><button data-go="captura">03 · Captura de ticket</button><button data-go="revision">04 · Revisión de compra</button><button data-go="historial">05 · Historial</button><button data-go="detalle">06 · Detalle de compra</button></nav><small>Prototipo visual · Versión 01<br>Sin guardar ni enviar información.</small></aside>
+<aside class="aside"><div class="brand"><span class="brand-icon"><svg><use href="#i-bag"/></svg></span>canasta.</div><h1>Tu compra,<br>más clara.</h1><p>Un recorrido por la app que estamos diseñando, con datos de ejemplo.</p><nav class="steps" aria-label="Todas las pantallas"><button data-go="inicio">01 · Inicio</button><button data-go="canasta">02 · Canasta</button><button data-go="captura">03 · Captura de ticket</button><button data-go="revision">04 · Revisión de compra</button><button data-go="historial">05 · Historial</button><button data-go="detalle">06 · Detalle de compra</button><button data-go="productos">07 · Productos</button><button data-go="producto">08 · Detalle del producto</button></nav><small>Prototipo visual · Versión 01<br>Sin guardar ni enviar información.</small></aside>
 <div class="app"><div class="demo">PROTOTIPO VISUAL · Todos los datos son ficticios</div><header class="topbar"><div class="brand"><svg><use href="#i-bag"/></svg>canasta.</div><button class="tag status-button" data-demo="Este estado es ilustrativo. La sincronización se implementará después."><span class="dot"></span>Modo sin conexión</button></header>
 <main>
 <!-- TODO Inicio: conectar el resumen al ViewModel. Mostrar solo datos realmente disponibles en el caché local. -->
@@ -48,20 +75,55 @@
 <section id="historial" class="view" hidden aria-labelledby="h-historial"><p class="eyebrow">Tus compras, organizadas</p><h2 id="h-historial" tabindex="-1">Historial</h2><p class="intro muted">Últimos 30 días · Datos de ejemplo</p><div class="hero"><div class="eyebrow">Total registrado · PYG</div><div class="amount">₲ 48.000</div><p>3 compras en este período</p></div><div class="between section-head"><h3>Noviembre 2026</h3><span class="muted small">Más reciente primero</span></div><button class="card history-link" data-go="detalle"><div class="row"><div class="iconbox"><svg><use href="#i-ticket"/></svg></div><div class="grow"><strong>Mercado del Barrio</strong><small>08 nov · 3 productos</small><br><span class="chip">Pendiente de sincronizar</span></div><span class="price">₲ 6.000</span><svg><use href="#i-arrow"/></svg></div></button><button class="card history-link" data-demo="Este registro es ilustrativo. El detalle navegable disponible es Mercado del Barrio, del 8 de noviembre."><div class="row"><div class="iconbox"><svg><use href="#i-ticket"/></svg></div><div class="grow"><strong>Almacén Central</strong><small>05 nov · Ejemplo sincronizado</small></div><span class="price">₲ 18.000</span></div></button><button class="card history-link" data-demo="Este registro es ilustrativo. Abrí la primera compra para recorrer su detalle."><div class="row"><div class="iconbox"><svg><use href="#i-ticket"/></svg></div><div class="grow"><strong>Supermercado del Parque</strong><small>02 nov · Ejemplo sincronizado</small></div><span class="price">₲ 24.000</span></div></button><div class="note">El historial completo estará en tu PC. El celular conservará las compras recientes y las que aún estén pendientes de sincronizar.</div></section>
 <!-- TODO Detalle: obtener compra por ID, renglones, descuentos, adjuntos voluntarios y estado real de sincronización desde ViewModel. -->
 <section id="detalle" class="view" hidden aria-labelledby="h-detalle"><button class="back" data-go="historial"><svg><use href="#i-back"/></svg>Volver al historial</button><div id="confirmacion" class="success" hidden role="status"><strong>Así se verá una compra registrada.</strong><div class="small">Simulación completada. No se guardó ni envió información.</div></div><p class="eyebrow">Detalle de compra</p><h2 id="h-detalle" tabindex="-1">Mercado del Barrio</h2><p class="intro muted">08 de noviembre de 2026 · PYG</p><span class="chip">Ejemplo · Pendiente de sincronizar</span><div class="card spaced"><div class="list"><div class="row"><div class="grow"><strong>Arroz integral · 500 g</strong><small>1 paquete · ₲ 1.800 por unidad</small></div><span class="price">₲ 1.800</span></div><div class="row"><div class="grow"><strong>Leche entera · 1 L</strong><small>2 unidades · ₲ 1.200 por unidad</small></div><span class="price">₲ 2.400</span></div><div class="row"><div class="grow"><strong>Manzana roja</strong><small>1 kg · ₲ 2.200 por kg</small></div><span class="price">₲ 2.200</span></div></div><div class="totals"><div class="between"><span>Subtotal</span><span>₲ 6.400</span></div><div class="between"><span>Descuento general</span><span>− ₲ 400</span></div><div class="between total-final"><span>Total pagado</span><span>₲ 6.000</span></div></div></div><div class="note row"><svg><use href="#i-ticket"/></svg><span>Sin imagen adjunta. En el flujo de captura temporal solo se conservan los datos de la compra.</span></div><button class="btn light full spaced" data-go="inicio">Volver al inicio</button></section>
+
+<!-- TODO Productos: obtener catálogo y últimos precios desde un ViewModel y repositorios.
+     La búsqueda actual solo filtra tres tarjetas ficticias; no consulta SQLite ni la API. -->
+<section id="productos" class="view" hidden aria-labelledby="h-productos">
+<p class="eyebrow">Conocé lo que comprás</p><h2 id="h-productos" tabindex="-1">Mis productos</h2>
+<p class="intro muted">Compará los precios registrados de un mismo producto a lo largo del tiempo.</p>
+<label class="small muted" for="buscar-producto">Buscar en el catálogo de ejemplo</label>
+<input class="product-search" id="buscar-producto" type="search" placeholder="Arroz, leche, manzana…" autocomplete="off">
+<div class="between section-head"><h3>Tu catálogo</h3><span class="badge">3 productos de ejemplo</span></div>
+<div id="catalogo-productos"></div><p id="catalogo-vacio" class="note" hidden>No encontramos ese producto en este catálogo de ejemplo.</p>
+<div class="note">Los precios corresponden a compras registradas. No son precios en vivo del supermercado.</div>
+</section>
+<!-- TODO Detalle de producto: consultar historial por producto y fecha; paginar; comparar
+     unidades compatibles y misma moneda. Mantener precio previo/posterior a descuentos explícito.
+     No interpretar intervalos del gráfico como precios observados diariamente.
+     Los datos más antiguos requieren PC accesible o una política futura de resúmenes locales. -->
+<section id="producto" class="view" hidden aria-labelledby="h-producto">
+<button class="back" data-go="productos"><svg><use href="#i-back"/></svg>Volver a productos</button>
+<p class="eyebrow">Evolución de precios</p><h2 id="h-producto" tabindex="-1">Arroz integral</h2>
+<p id="producto-presentacion" class="intro muted"></p>
+<div class="product-summary"><div class="stat-box"><span class="small muted">Último precio registrado</span><div class="stat-value" id="producto-precio"></div><span class="small muted" id="producto-unidad"></span></div><div class="stat-box"><span class="small muted">Frente al registro anterior</span><div class="stat-value" id="producto-variacion"></div><span class="small muted" id="producto-diferencia"></span></div></div>
+<div class="between"><h3>Subidas y bajadas</h3><span class="tag">30 días · Ejemplo</span></div>
+<p class="small muted">PYG · Precio antes de descuentos · <span id="grafico-base"></span></p>
+<div class="chart-wrap"><div id="grafico-precios"></div><div class="observation-buttons" id="fechas-grafico" aria-label="Elegir un registro del gráfico"></div><div id="observacion-precio" class="chart-observation" aria-live="polite"></div></div>
+<p class="small muted">Cada punto es una compra de ejemplo. Las líneas solo unen registros: no indican el precio real entre esas fechas.</p>
+<div class="between section-head"><h3>Historial del producto</h3><span class="small muted">Más reciente primero</span></div>
+<table class="price-history"><caption class="small muted" style="text-align:left;padding-bottom:8px">Precios sin descuentos, en guaraníes</caption><thead><tr><th scope="col">Fecha / comercio</th><th scope="col">Precio</th></tr></thead><tbody id="historial-producto"></tbody></table>
+<div id="producto-equivalencia" class="note"></div>
+<div class="note warm">Solo se muestran registros de ejemplo de los últimos 30 días. El historial completo quedará en tu PC. Este prototipo no consulta datos históricos reales.</div>
+</section>
 </main>
 <!-- Cámara: acción principal, centrada y accesible desde todas las pantallas. -->
-<nav class="bottom" aria-label="Navegación principal"><button data-go="inicio"><svg><use href="#i-home"/></svg>Inicio</button><button data-go="canasta"><svg><use href="#i-bag"/></svg>Canasta</button><button class="camera-primary" data-go="captura" aria-label="Cámara: capturar ticket de compra"><span class="camera-circle"><svg><use href="#i-camera"/></svg></span>Cámara</button><button data-go="historial"><svg><use href="#i-ticket"/></svg>Historial</button></nav>
+<nav class="bottom" aria-label="Navegación principal"><button data-go="inicio"><svg><use href="#i-home"/></svg>Inicio</button><button data-go="canasta"><svg><use href="#i-bag"/></svg>Canasta</button><button class="camera-primary" data-go="captura" aria-label="Cámara: capturar ticket de compra"><span class="camera-circle"><svg><use href="#i-camera"/></svg></span>Cámara</button><button data-go="productos"><svg><use href="#i-box"/></svg>Productos</button><button data-go="historial"><svg><use href="#i-ticket"/></svg>Historial</button></nav>
 </div></div><div id="aviso" class="toast" role="status" aria-live="polite"></div>
 <script>
 // Solo navegación de la maqueta. NO es un ViewModel ni lógica de negocio.
 // TODO futuro: sustituir esta navegación por rutas Flutter y enlazar Views a ViewModels.
 // TODO futuro: implementar repositorios, SQLite, cliente HTTP y configuración en sus capas.
 // No agregar fetch, almacenamiento, cámara u OCR a este prototipo de presentación.
-const pantallas=['inicio','canasta','captura','revision','historial','detalle'];
+const pantallas=['inicio','canasta','captura','revision','historial','detalle','productos','producto'];
 function mostrar(){
  const destino=location.hash.slice(1);const actual=pantallas.includes(destino)?destino:'inicio';
  document.querySelectorAll('.view').forEach(v=>{v.hidden=v.id!==actual;});
  document.querySelectorAll('[data-go]').forEach(b=>{if(b.dataset.go===actual)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+ if(actual==='producto')dibujarProducto();
+ if(actual==='productos')dibujarCatalogo();
+ document.querySelectorAll('.bottom [data-go]').forEach(b=>{
+   if((actual==='producto'&&b.dataset.go==='productos')||((actual==='revision')&&b.dataset.go==='captura')||(actual==='detalle'&&b.dataset.go==='historial'))b.setAttribute('aria-current','page');
+ });
  if(actual!=='detalle')document.getElementById('confirmacion').hidden=true;
  document.title=document.getElementById('h-'+actual).textContent+' · Canasta (prototipo)';
  window.scrollTo(0,0);document.getElementById('h-'+actual).focus({preventScroll:true});
@@ -73,6 +135,66 @@ document.addEventListener('click',e=>{const boton=e.target.closest('button');if(
  if(boton.dataset.demo){const aviso=document.getElementById('aviso');aviso.textContent=boton.dataset.demo;clearTimeout(temporizador);temporizador=setTimeout(()=>aviso.textContent='',6500);}
 });
 document.getElementById('demo-confirmar').addEventListener('click',()=>{document.getElementById('confirmacion').hidden=false;ir('detalle');});
+
+// Datos exclusivamente ficticios para revisar las vistas. No se cargan ni guardan compras.
+// Los importes representan precios antes de descuentos; no se prorratea el descuento general.
+const productosDemo=[
+ {id:'arroz',nombre:'Arroz integral',presentacion:'Bolsa de 500 g · Marca de ejemplo',unidad:'por paquete de 500 g',base:'paquete de 500 g',factor:2,equivalente:'kg',icono:'box',precios:[1500,1700,1600,1800]},
+ {id:'leche',nombre:'Leche entera',presentacion:'Caja de 1 litro · Marca de ejemplo',unidad:'por caja de 1 L',base:'caja de 1 L',factor:1,equivalente:'L',icono:'box',precios:[1100,1250,1300,1200]},
+ {id:'manzana',nombre:'Manzana roja',presentacion:'A granel · Venta por peso',unidad:'por kilogramo',base:'kilogramo',factor:1,equivalente:'kg',icono:'leaf',precios:[1800,2100,2000,2200]}
+];
+const fechasDemo=['12 oct 2026','22 oct 2026','02 nov 2026','08 nov 2026'];
+const fechasCortas=['12 oct','22 oct','02 nov','08 nov'];
+const comerciosDemo=['Almacén Central','Mercado del Barrio','Supermercado del Parque','Mercado del Barrio'];
+const gs=n=>'₲ '+new Intl.NumberFormat('es-PY',{maximumFractionDigits:0}).format(n);
+let productoElegido='arroz';
+function productoActual(){return productosDemo.find(p=>p.id===productoElegido)||productosDemo[0];}
+function dibujarCatalogo(){
+ const busqueda=document.getElementById('buscar-producto').value.toLocaleLowerCase('es').trim();
+ const visibles=productosDemo.filter(p=>(p.nombre+' '+p.presentacion).toLocaleLowerCase('es').includes(busqueda));
+ document.getElementById('catalogo-productos').innerHTML=visibles.map(p=>{
+ const ultimo=p.precios[3],anterior=p.precios[2],dif=ultimo-anterior;
+ return '<button class="card catalogue-card" data-producto="'+p.id+'"><div class="row"><div class="iconbox"><svg aria-hidden="true"><use href="#i-'+p.icono+'"/></svg></div><div class="grow"><strong class="product-name">'+p.nombre+'</strong><small>'+p.presentacion+'</small><div class="subline">'+gs(ultimo)+' '+p.unidad+'</div><div class="subline '+(dif>0?'trend-up':'trend-down')+'">'+(dif>0?'Subió ':'Bajó ')+gs(Math.abs(dif))+' desde el registro anterior</div></div><svg aria-hidden="true"><use href="#i-arrow"/></svg></div></button>';
+ }).join('');
+ document.getElementById('catalogo-vacio').hidden=visibles.length>0;
+}
+function elegirPunto(indice){
+ const p=productoActual();
+ document.getElementById('observacion-precio').textContent=fechasDemo[indice]+' · '+comerciosDemo[indice]+' · '+gs(p.precios[indice])+' '+p.unidad;
+ document.querySelectorAll('[data-punto]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.punto)===indice)));
+ document.querySelectorAll('.chart-point').forEach((c,i)=>{c.setAttribute('r',i===indice?'6':'4');c.style.fill=i===indice?'var(--lime)':'var(--paper)';});
+}
+function dibujarProducto(){
+ const p=productoActual(),ultimo=p.precios[3],anterior=p.precios[2],dif=ultimo-anterior;
+ document.getElementById('h-producto').textContent=p.nombre;
+ document.getElementById('producto-presentacion').textContent=p.presentacion;
+ document.getElementById('producto-precio').textContent=gs(ultimo);
+ document.getElementById('producto-unidad').textContent=p.unidad+' · 08 nov 2026';
+ const variacion=document.getElementById('producto-variacion');
+ variacion.textContent=(dif>0?'+':'−')+new Intl.NumberFormat('es-PY',{maximumFractionDigits:1}).format(Math.abs(dif/anterior*100))+' %';
+ variacion.className='stat-value '+(dif>0?'trend-up':'trend-down');
+ document.getElementById('producto-diferencia').textContent=(dif>0?'Subió ':'Bajó ')+gs(Math.abs(dif));
+ document.getElementById('grafico-base').textContent='Por '+p.base;
+ const min=Math.floor(Math.min(...p.precios)*.85/100)*100,max=Math.ceil(Math.max(...p.precios)*1.1/100)*100;
+ const xs=[62,154,246,338],y=v=>174-(v-min)/(max-min)*140;
+ const puntos=p.precios.map((v,i)=>xs[i]+','+y(v)).join(' ');
+ let svg='<svg class="price-chart" viewBox="0 0 370 210" role="img" aria-labelledby="titulo-grafico descripcion-grafico"><title id="titulo-grafico">Evolución del precio de '+p.nombre+'</title><desc id="descripcion-grafico">Cuatro precios ficticios antes de descuentos. La tabla siguiente contiene los valores y comercios.</desc>';
+ for(let i=0;i<4;i++){const v=Math.round(min+(max-min)*i/3);svg+='<line class="gridline" x1="60" x2="340" y1="'+y(v)+'" y2="'+y(v)+'"/><text x="51" y="'+(y(v)+4)+'" text-anchor="end">'+new Intl.NumberFormat('es-PY').format(v)+'</text>';}
+ svg+='<polyline class="trendline" points="'+puntos+'"/>';
+ p.precios.forEach((v,i)=>{svg+='<circle class="chart-point" cx="'+xs[i]+'" cy="'+y(v)+'" r="4"/><text x="'+xs[i]+'" y="199" text-anchor="middle">'+fechasCortas[i]+'</text>';});
+ svg+='</svg>';
+ document.getElementById('grafico-precios').innerHTML=svg;
+ document.getElementById('fechas-grafico').innerHTML=fechasCortas.map((f,i)=>'<button data-punto="'+i+'" aria-label="Ver precio del '+fechasDemo[i]+'" aria-pressed="false">'+f+'</button>').join('');
+ document.getElementById('historial-producto').innerHTML=p.precios.map((v,i)=>({v,i})).reverse().map(({v,i})=>'<tr><td><strong>'+fechasDemo[i]+'</strong><br><span class="muted">'+comerciosDemo[i]+'</span></td><td>'+gs(v)+'<br><span class="muted">'+p.base+'</span></td></tr>').join('');
+ document.getElementById('producto-equivalencia').textContent='Último precio equivalente: '+gs(ultimo*p.factor)+' por '+p.equivalente+'. Se compara el mismo contenido y unidad, antes de descuentos.';
+ document.title=p.nombre+' · Canasta (prototipo)';
+ elegirPunto(3);
+}
+document.getElementById('buscar-producto').addEventListener('input',dibujarCatalogo);
+document.addEventListener('click',e=>{
+ const producto=e.target.closest('[data-producto]');if(producto){productoElegido=producto.dataset.producto;ir('producto');}
+ const punto=e.target.closest('[data-punto]');if(punto)elegirPunto(Number(punto.dataset.punto));
+});
 window.addEventListener('hashchange',mostrar);mostrar();
 </script>
 </body></html>
