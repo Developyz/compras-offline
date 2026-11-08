@@ -29,7 +29,7 @@ El servidor Spring Boot será un proceso en ejecución en la PC; no presupone un
 
 La app lee y guarda en SQLite. Al registrar una compra, guarda el dato y su operación pendiente en la misma transacción local. El servicio de sincronización envía los pendientes cuando puede alcanzar la API de la PC y recibe los cambios del servidor.
 
-Tener internet no equivale a tener la API disponible: también deben estar encendidos y accesibles la PC y su servicio. No se ha decidido si la conexión será solo por red local o también remota. No se requiere publicar la API en internet para trabajar por red local.
+Tener internet no equivale a tener la API disponible: también deben estar encendidos y accesibles la PC y su servicio. Decisión confirmada: la conexión será únicamente por la misma red local Wi-Fi, sin acceso remoto ni publicación de la API en internet. La PC puede usar Ethernet al mismo router si tiene comunicación local con el celular. La red local puede funcionar aunque no haya salida a internet.
 
 El celular conserva los últimos 30 días de compras y la PC el historial completo. Las compras pendientes de sincronización no deben eliminarse por antigüedad. Las capturas temporales para leer tickets no se sincronizan ni se conservan como adjuntos.
 
@@ -61,5 +61,10 @@ Esto no significa que exista ya una app ejecutable, una API implementada ni una 
 - Spring Data JPA/Hibernate y Flyway: propuestas, aún no confirmadas.
 - Librerías Flutter de SQLite, gestión de estado, HTTP y trabajo en segundo plano.
 - Motor OCR para tickets y lector de códigos de barras.
-- Contratos de API, autenticación y vinculación de dispositivos, acceso local/remoto y resolución de conflictos.
+- Contratos de API, autenticación y vinculación de dispositivos, configuración de acceso exclusivamente local y resolución de conflictos.
 - Política de adjuntos y disponibilidad de informes históricos con solo 30 días de datos locales.
+
+
+## Conexión confirmada
+
+La sincronización se realizará solo dentro de la misma red local. Fuera de ella, o con la PC apagada, se continuará trabajando en SQLite con operaciones pendientes. No se abrirán puertos del router hacia internet. Quedan pendientes la vinculación/autenticación, el puerto local, el descubrimiento o configuración de dirección y el transporte seguro. La configuración y conectividad real se comprobarán más adelante en la PC del usuario.
