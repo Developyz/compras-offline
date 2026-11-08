@@ -1,50 +1,56 @@
 # Compras Offline
 
-Aplicación Android de compras con funcionamiento offline-first y sincronización con una PC.
+Aplicación Android para organizar compras, comparar precios y planificar la canasta familiar. Funcionamiento offline-first con sincronización entre el celular y una PC.
+
+## Stack confirmado
+
+| Componente | Tecnología |
+| --- | --- |
+| Cliente Android | Flutter con Dart |
+| Base de datos local | SQLite |
+| Servidor y API en la PC | Java con Spring Boot |
+| Base de datos del servidor | PostgreSQL |
+| Sistema de la PC | Windows 10 |
+| Control de versiones | Git y GitHub |
+
+## Arquitectura
+
+- General: offline-first con sincronización cliente-servidor. El celular es el cliente y la PC es el servidor.
+- Android: MVVM con repositorios.
+- Servidor: controladores → servicios → repositorios → PostgreSQL.
+- La API se implementará dentro de Spring Boot en la PC. Flutter se comunicará con ella mediante HTTP; no accederá directamente a PostgreSQL. REST con JSON es la propuesta de contrato pendiente de especificar.
+
+Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades, decisiones y pendientes.
+
+## Datos y tickets
+
+- El celular conserva los últimos 30 días de compras; la PC mantiene el historial completo. No eliminar compras pendientes de sincronización por antigüedad.
+- Registrar fecha, productos, cantidades, precios, descuentos y total, además del comercio y datos de producto disponibles para comparar precios.
+- Lectura automática del ticket incluida en el alcance inicial, con revisión antes de confirmar.
+- Las capturas desde la app son temporales: se eliminan al confirmar o cancelar, no se guardan en la galería ni se sincronizan.
+- Las imágenes que el usuario decida subir y conservar pueden adjuntarse a una compra.
 
 ## Estado
 
-Proyecto en etapa de definición. Todavía no hay una aplicación ejecutable.
+Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de negocio, más las tablas técnicas correspondientes a cada motor. Se comprobó el esquema en PostgreSQL 16 y SQLite. Aún no hay app ejecutable, API ni sincronización implementadas.
 
-## Decisiones confirmadas
+## Estructura
 
-- Android funcionará sin conexión y sin depender de que la PC esté encendida.
-- El celular almacenará temporalmente tickets, canasta y precios.
-- El celular conservará los últimos 30 días de compras; la PC mantendrá el historial completo.
-- SQLite será la base de datos local de Android y PostgreSQL la de la PC.
-- La PC utiliza Windows 10.
-- La sincronización será automática cuando vuelva a estar disponible la conexión con el servicio de la PC.
+- `DB/`: scripts iniciales de PostgreSQL y SQLite e instrucciones.
+- `docs/`: decisiones y diseño.
+- `android/`: ubicación prevista de la aplicación Flutter; todavía no creada.
+- `server/`: ubicación prevista del servidor Spring Boot; todavía no creada.
 
-## Propuestas pendientes de validar
+## Documentación
 
-- Conservar las compras pendientes de sincronización aunque superen los 30 días. Limpiar el historial local solo tras confirmar su almacenamiento en la PC.
-- Primera versión: crear y editar una canasta, registrar productos, cantidades y precios, confirmar y consultar compras, sincronizar y mostrar pendientes y errores.
-- Posponer el reconocimiento automático de tickets, las estadísticas avanzadas y las integraciones con supermercados.
+- [Arquitectura y stack](docs/arquitectura-y-stack.md)
+- [Registro de tickets e imágenes](docs/registro-de-tickets.md)
+- [Objetivo y datos de compras](docs/objetivo-y-datos-de-compras.md)
+- [Catálogo de productos](docs/catalogo-de-productos.md)
+- [Base de datos](DB/README.md)
 
-## Orden de trabajo
+## Próximas definiciones
 
-1. Definir el alcance de la primera versión.
-2. Definir el flujo de compra y las pantallas.
-3. Elegir las tecnologías de Android y del servicio de la PC y definir su conexión.
-4. Diseñar los esquemas SQL de SQLite y PostgreSQL.
-5. Especificar la cola de sincronización, reintentos, prevención de duplicados, conflictos y contratos de API.
-6. Implementar una compra sin conexión y su sincronización con la PC.
-7. Validar cortes de conexión, reinicios, errores y recuperación.
-
-## Preguntas abiertas
-
-- ¿Se registrarán productos mientras se compra, al terminar o en ambos momentos?
-- ¿Un ticket será el registro de la compra, una foto del comprobante o ambos?
-- ¿La PC será accesible solo por la red local o también a distancia?
-- ¿Se utilizará un solo celular o varios?
-
-## Estructura prevista
-
-Los componentes se crearán cuando estén definidas sus tecnologías:
-
-- `android/`: aplicación móvil y almacenamiento local.
-- `server/`: servicio de API y sincronización para la PC.
-- `database/`: migraciones y esquemas SQL.
-- `docs/`: arquitectura, contratos y decisiones.
+Versiones del stack, librerías complementarias, contratos de API, autenticación y vinculación, conexión local o remota, conflictos de sincronización y política de adjuntos. Las propuestas históricas pendientes en otros documentos deben leerse junto con las decisiones vigentes de arquitectura.
 
 No guardar credenciales, datos reales de compras ni fotos de tickets en el repositorio.
