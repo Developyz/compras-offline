@@ -1,7 +1,7 @@
 import 'valores_compra.dart';
 
 /// Entrada de revisión, no DTO de API ni entidad lista para persistir.
-/// TODO: incorporar referencias, fecha y contexto histórico al agregado completo.
+/// El agregado con referencias, fecha y contexto histórico vive en compra.dart.
 final class DetalleEnRevision {
   const DetalleEnRevision({
     required this.id,

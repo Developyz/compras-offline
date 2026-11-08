@@ -1,5 +1,10 @@
 # Modelos de dominio
 
-`valores_compra.dart` define importes exactos PYG y cantidades en milésimas. `borrador_compra.dart` define entradas inmutables de revisión y resumen, sin SQL ni HTTP.
+- `valores_compra.dart`: importes exactos PYG y cantidades en milésimas.
+- `identidad_y_fecha.dart`: UUID, texto y fecha civil.
+- `producto.dart`: catálogo, unidades, contenido y contexto histórico.
+- `canasta.dart`: canasta, items y estimación con precios desconocidos.
+- `compra.dart`: agregado de compra, detalles y descuentos con validación local.
+- `borrador_compra.dart`: entrada parcial para el servicio de revisión.
 
-Es una base parcial: no es una compra lista para guardar ni un DTO de API. TODO: completar Producto, Canasta, Compra, fechas, referencias y contexto histórico de acuerdo con el contrato; después incorporar repositorios y ViewModels. Ver [alcance y reglas](../../../../docs/modelos-y-revision-compra.md).
+Sin SQL ni HTTP. Son modelos de dominio, no DTO de API. TODO: repositorios, existencia de referencias, transiciones de estados, versiones y sincronización; incorporar adaptadores y ViewModels antes de guardar/enviar. Ver [alcance y pruebas](../../../../docs/modelos-producto-canasta-compra.md).

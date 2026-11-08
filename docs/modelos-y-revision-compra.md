@@ -1,3 +1,5 @@
+> Informe de la primera etapa. Los modelos ampliados se documentan en [producto, canasta y compra](modelos-producto-canasta-compra.md).
+
 # Primera base de dominio: revisión de compras
 
 Se incorporan modelos inmutables de entrada para revisar un ticket y un servicio de cálculo en Dart puro. No dependen de Flutter, SQLite, HTTP, cámara ni OCR. Las nueve pantallas mantienen sus datos ficticios y su funcionamiento anterior; todavía no consumen este servicio.
