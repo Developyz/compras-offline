@@ -1,0 +1,161 @@
+{
+  "operacion_compra": {
+    "operacion_id": "00000000-0000-0000-0000-000000000197",
+    "dispositivo_id": "00000000-0000-0000-0000-000000000198",
+    "entidad": "compras",
+    "entidad_id": "00000000-0000-0000-0000-000000000191",
+    "accion": "guardar",
+    "version_base": 0,
+    "datos": {
+      "comercio_id": "00000000-0000-0000-0000-000000000195",
+      "sucursal_id": null,
+      "canasta_id": null,
+      "fecha_compra": "2026-11-08T15:30:00.000Z",
+      "fecha_local": "2026-11-08",
+      "moneda": "PYG",
+      "decimales_moneda": 0,
+      "estado": "confirmada",
+      "subtotal_menor": 1800,
+      "descuento_productos_menor": 0,
+      "descuento_general_menor": 100,
+      "ajuste_menor": 0,
+      "total_ticket_menor": 1700,
+      "total_calculado_menor": 1700,
+      "observaciones": null,
+      "detalles": [
+        {
+          "id": "00000000-0000-0000-0000-000000000192",
+          "numero_linea": 1,
+          "producto_id": "00000000-0000-0000-0000-000000000193",
+          "descripcion_ticket": "ARROZ INT 500G",
+          "cantidad_milesimas": 1000,
+          "unidad_cantidad_id": "00000000-0000-0000-0000-000000000194",
+          "precio_unitario_menor": 1800,
+          "importe_bruto_menor": 1800,
+          "descuento_menor": 0,
+          "importe_final_menor": 1800,
+          "contexto_historico": {
+            "nombre_producto_historico": "Arroz integral",
+            "presentacion_historica": "Bolsa",
+            "contenido_milesimas_historico": 500000,
+            "unidad_contenido_simbolo_historico": "g",
+            "dimension_contenido_historica": "masa",
+            "factor_base_contenido_historico": 1,
+            "dimension_cantidad_historica": "conteo",
+            "factor_base_cantidad_historico": 1
+          }
+        }
+      ],
+      "descuentos": [
+        {
+          "id": "00000000-0000-0000-0000-000000000196",
+          "detalle_compra_id": null,
+          "descripcion": "Promoción general",
+          "importe_menor": 100
+        }
+      ]
+    }
+  },
+  "recibo_compra": {
+    "operacion_id": "00000000-0000-0000-0000-000000000197",
+    "entidad": "compras",
+    "entidad_id": "00000000-0000-0000-0000-000000000191",
+    "version": 1,
+    "estado": "aplicada",
+    "confirmado_en": "2026-11-08T15:30:00.000Z"
+  },
+  "compra_lectura": {
+    "comercio_id": "00000000-0000-0000-0000-000000000195",
+    "sucursal_id": null,
+    "canasta_id": null,
+    "fecha_compra": "2026-11-08T15:30:00.000Z",
+    "fecha_local": "2026-11-08",
+    "moneda": "PYG",
+    "decimales_moneda": 0,
+    "estado": "confirmada",
+    "subtotal_menor": 1800,
+    "descuento_productos_menor": 0,
+    "descuento_general_menor": 100,
+    "ajuste_menor": 0,
+    "total_ticket_menor": 1700,
+    "total_calculado_menor": 1700,
+    "observaciones": null,
+    "detalles": [
+      {
+        "id": "00000000-0000-0000-0000-000000000192",
+        "numero_linea": 1,
+        "producto_id": "00000000-0000-0000-0000-000000000193",
+        "descripcion_ticket": "ARROZ INT 500G",
+        "cantidad_milesimas": 1000,
+        "unidad_cantidad_id": "00000000-0000-0000-0000-000000000194",
+        "precio_unitario_menor": 1800,
+        "importe_bruto_menor": 1800,
+        "descuento_menor": 0,
+        "importe_final_menor": 1800,
+        "contexto_historico": {
+          "nombre_producto_historico": "Arroz integral",
+          "presentacion_historica": "Bolsa",
+          "contenido_milesimas_historico": 500000,
+          "unidad_contenido_simbolo_historico": "g",
+          "dimension_contenido_historica": "masa",
+          "factor_base_contenido_historico": 1,
+          "dimension_cantidad_historica": "conteo",
+          "factor_base_cantidad_historico": 1
+        }
+      }
+    ],
+    "descuentos": [
+      {
+        "id": "00000000-0000-0000-0000-000000000196",
+        "detalle_compra_id": null,
+        "descripcion": "Promoción general",
+        "importe_menor": 100
+      }
+    ],
+    "id": "00000000-0000-0000-0000-000000000191",
+    "version": 1,
+    "creado_en": "2026-11-08T15:30:00.000Z",
+    "actualizado_en": "2026-11-08T15:30:00.000Z",
+    "eliminado_en": null,
+    "adjuntos": []
+  },
+  "observacion_por_kg": {
+    "detalle_compra_id": "00000000-0000-0000-0000-000000000192",
+    "compra_id": "00000000-0000-0000-0000-000000000191",
+    "fecha_compra": "2026-11-08T15:30:00.000Z",
+    "fecha_local": "2026-11-08",
+    "comercio_id": "00000000-0000-0000-0000-000000000195",
+    "comercio_nombre": "Mercado de ejemplo",
+    "cantidad_milesimas": 1000,
+    "unidad_cantidad_id": "00000000-0000-0000-0000-000000000194",
+    "precio_unitario_menor": 1800,
+    "importe_bruto_menor": 1800,
+    "descuento_menor": 0,
+    "importe_final_menor": 1800,
+    "moneda": "PYG",
+    "decimales_moneda": 0,
+    "contexto_historico": {
+      "nombre_producto_historico": "Arroz integral",
+      "presentacion_historica": "Bolsa",
+      "contenido_milesimas_historico": 500000,
+      "unidad_contenido_simbolo_historico": "g",
+      "dimension_contenido_historica": "masa",
+      "factor_base_contenido_historico": 1,
+      "dimension_cantidad_historica": "conteo",
+      "factor_base_cantidad_historico": 1
+    },
+    "base": "kg",
+    "precio_normalizado_pyg": "3600.000000",
+    "motivo_no_normalizable": null
+  },
+  "error_conflicto": {
+    "error": {
+      "codigo": "VERSION_CONFLICTO",
+      "mensaje": "La compra cambió en otro dispositivo.",
+      "reintentable": false,
+      "campos": [],
+      "version_actual": 2
+    },
+    "solicitud_id": "00000000-0000-0000-0000-000000000199"
+  }
+}
