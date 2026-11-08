@@ -63,3 +63,8 @@ Estas tablas preparan el almacenamiento; **el SQL no implementa por sí solo la 
 ## Alcance
 
 Modelo inicial para una instalación familiar. No incluye multiusuario ni aislamiento de varias familias, presupuestos mensuales, devoluciones o documentos con totales negativos. Esas funciones requieren diseño y migraciones posteriores. Los informes completos sin PC necesitan una política de resúmenes adicional, porque el celular conserva solo 30 días de compras.
+
+
+## Diseño posterior de primera sincronización
+
+Ver [primera sincronización y retención](../docs/api/primera-sincronizacion-y-retencion.md). El documento describe snapshots, staging persistente y revisiones en conflicto que requieren migraciones adicionales: estos scripts iniciales aún no los implementan. La ventana propuesta son 30 días calendario incluyendo hoy, nunca aplicada a compras pendientes o en conflicto. La vinculación ya está definida por QR y la conexión será exclusivamente local, sin acceso remoto.
