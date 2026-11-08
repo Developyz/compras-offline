@@ -18,11 +18,13 @@ Aplicación Android para organizar compras, comparar precios y planificar la can
 - General: offline-first con sincronización cliente-servidor. El celular es el cliente y la PC es el servidor.
 - Android: MVVM con repositorios.
 - Servidor: controladores → servicios → repositorios → PostgreSQL.
-- La API se implementará dentro de Spring Boot en la PC. Flutter se comunicará con ella mediante HTTP; no accederá directamente a PostgreSQL. REST con JSON es la propuesta de contrato pendiente de especificar.
+- La API se implementará dentro de Spring Boot en la PC. Flutter se comunicará con ella mediante HTTP; no accederá directamente a PostgreSQL. REST con JSON es la propuesta; el primer borrador de operaciones está en [contratos de API v1](docs/api/contratos-v1.md), todavía pendiente de completar y confirmar.
 
 Ver [arquitectura y stack](docs/arquitectura-y-stack.md) para responsabilidades, decisiones y pendientes.
 
 ## Datos y tickets
+
+- Moneda confirmada: guaraní paraguayo (PYG / ₲), sin decimales. El ajuste pendiente del valor predeterminado SQL está señalado en el borrador de API.
 
 - El celular conserva los últimos 30 días de compras; la PC mantiene el historial completo. No eliminar compras pendientes de sincronización por antigüedad.
 - Registrar fecha, productos, cantidades, precios, descuentos y total, además del comercio y datos de producto disponibles para comparar precios.
@@ -37,7 +39,8 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 ## Estructura
 
 - `DB/`: scripts iniciales de PostgreSQL y SQLite e instrucciones.
-- `docs/`: decisiones y diseño.
+- `docs/`: decisiones y diseño, incluyendo el borrador de API en `docs/api/`.
+- `prototipo/`: pantallas HTML navegables con datos ficticios y comentarios de implementación pendiente.
 - `android/`: ubicación prevista de la aplicación Flutter; todavía no creada.
 - `server/`: ubicación prevista del servidor Spring Boot; todavía no creada.
 
@@ -48,6 +51,8 @@ Ya están creados los scripts SQL iniciales en [DB](DB/README.md): 13 tablas de 
 - [Objetivo y datos de compras](docs/objetivo-y-datos-de-compras.md)
 - [Catálogo de productos](docs/catalogo-de-productos.md)
 - [Base de datos](DB/README.md)
+- [Contratos de API v1 — borrador](docs/api/contratos-v1.md)
+- [Prototipo visual Android](prototipo/README.md)
 
 ## Próximas definiciones
 
