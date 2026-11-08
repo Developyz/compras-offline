@@ -51,7 +51,7 @@ El celular conserva los últimos 30 días de compras y la PC el historial comple
 
 ## Estado real de implementación
 
-Los scripts DB/postgresql.sql y DB/sqlite.sql están creados. Se comprobó la ejecución del esquema en PostgreSQL 16 y SQLite, con pruebas adicionales de integridad en SQLite. El modelo contiene 13 tablas de negocio; PostgreSQL agrega 3 de sincronización (16 en total) y SQLite agrega 2 (15 en total).
+Los scripts DB/postgresql.sql y DB/sqlite.sql están creados. Se comprobó la ejecución del esquema en PostgreSQL 16 y SQLite, con pruebas adicionales de integridad en SQLite. La base v1 contiene 13 tablas de negocio, 16 tablas totales en PostgreSQL y 15 en SQLite. Las [migraciones v2](../DB/migrations/README.md) amplían el almacenamiento a 24 y 21 tablas respectivamente para cubrir vinculación, snapshots y conflictos.
 
 Esto no significa que exista ya una app ejecutable, una API implementada ni una sincronización funcional. Tampoco se verificó todavía el despliegue del stack en la PC Windows 10 del usuario.
 
@@ -73,3 +73,8 @@ La sincronización se realizará solo dentro de la misma red local. Fuera de ell
 ## Método de vinculación confirmado
 
 El celular escaneará un QR mostrado en la PC para iniciar la vinculación. Ver [diseño de vinculación por QR](api/vinculacion-qr.md). La propuesta técnica incluye aprobación en la PC, identidad del servidor y credencial por dispositivo. No se necesita escanear un QR en cada sincronización. La herramienta administrativa de PC, sus pantallas y el mecanismo TLS aún deben implementarse y verificarse.
+
+
+## Revisión de contratos y almacenamiento v2
+
+Ver [OpenAPI](api/openapi.json), [reglas complementarias](api/decisiones-v2.md) y [ejemplos JSON](api/ejemplos-v2.json). Se validó el documento OpenAPI y las migraciones con datos de prueba preservados. Las validaciones no demuestran todavía conexión entre Android y la PC. Transferencia de adjuntos y selección de librerías siguen pendientes.
