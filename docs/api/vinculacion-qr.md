@@ -1,5 +1,8 @@
 # Vinculación del celular con la PC mediante QR
 
+**Ampliación v2:** ver [contrato OpenAPI](openapi.json), [reglas complementarias](decisiones-v2.md) y [migraciones SQL](../../DB/migrations/README.md). El texto siguiente conserva el razonamiento previo; los campos exactos y parámetros precisados están en esos documentos. Las migraciones ya están escritas y comprobadas; la lógica de servicios sigue sin implementar.
+
+
 ## Alcance confirmado
 
 La vinculación inicial se realizará escaneando desde Android un QR mostrado en la PC. La comunicación será exclusivamente por la misma red local. El celular conserva su funcionamiento offline-first.
