@@ -52,6 +52,7 @@ Los scripts [DB](DB/README.md) definen 24 tablas PostgreSQL v2 y 23 tablas SQLit
 - [Estructura de carpetas y etapas](docs/estructura-y-etapas.md)
 - [Herramientas y versiones candidatas](docs/herramientas-y-versiones.md)
 - [Preparación de Windows](docs/preparacion-windows.md)
+- [Modo oscuro y captura](docs/modo-oscuro.md)
 - [Inicio con gastos reales](docs/inicio-gastos-reales.md)
 - [Guardado local en pantalla](docs/guardado-local-en-pantalla.md)
 - [SQLite: compras y cola](docs/sqlite-compras-y-cola.md)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/demo_widgets.dart';
+import '../widgets/tema_app.dart';
 
 /// Navegación de presentación. No representa sincronización ni ViewModels de negocio.
 class DemoScaffold extends StatelessWidget {
@@ -47,32 +48,45 @@ class DemoScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      backgroundColor: canastaPaper,
+      backgroundColor: fondoApp(context),
       surfaceTintColor: Colors.transparent,
-      title: const FittedBox(
+      title: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(
           'canasta.',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: canastaGreen,
+            color: textoVerde(context),
           ),
         ),
       ),
       actions: [
+        if (ControlTema.of(context) != null)
+          IconButton(
+            key: const ValueKey('alternar-tema'),
+            tooltip: Theme.of(context).brightness == Brightness.dark
+                ? 'Modo claro'
+                : 'Modo oscuro',
+            onPressed: ControlTema.of(context)!.alternar,
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
+          ),
         IconButton(
           tooltip: 'Ver estados de ejemplo',
           onPressed: () => Navigator.of(context).pushNamed('/estados'),
-          icon: const Icon(Icons.sync_outlined, color: canastaGreen),
+          icon: Icon(Icons.sync_outlined, color: textoVerde(context)),
         ),
       ],
     ),
     body: child,
     bottomNavigationBar: DecoratedBox(
-      decoration: const BoxDecoration(
-        color: canastaPaper,
-        border: Border(top: BorderSide(color: Color(0xFFE2E8DF))),
+      decoration: BoxDecoration(
+        color: fondoApp(context),
+        border: Border(top: BorderSide(color: bordeApp(context))),
       ),
       child: SafeArea(
         top: false,
@@ -107,7 +121,7 @@ class DemoScaffold extends StatelessWidget {
                                 color: camera
                                     ? (selected ? canastaLime : canastaGreen)
                                     : (selected
-                                          ? canastaSoft
+                                          ? suaveApp(context)
                                           : Colors.transparent),
                                 borderRadius: BorderRadius.circular(
                                   camera ? 30 : 12,
@@ -118,7 +132,9 @@ class DemoScaffold extends StatelessWidget {
                                 size: camera ? 28 : 23,
                                 color: camera
                                     ? (selected ? canastaGreen : canastaLime)
-                                    : (selected ? canastaGreen : canastaMuted),
+                                    : (selected
+                                          ? textoVerde(context)
+                                          : textoSecundario(context)),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -127,7 +143,9 @@ class DemoScaffold extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 11,
-                                color: selected ? canastaGreen : canastaMuted,
+                                color: selected
+                                    ? textoVerde(context)
+                                    : textoSecundario(context),
                                 fontWeight: selected || camera
                                     ? FontWeight.w700
                                     : FontWeight.w500,

@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../demo/demo_data.dart';
@@ -131,17 +133,17 @@ class _EstadosViewState extends State<EstadosView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(example.icon, color: canastaGreen, size: 48),
+              Icon(example.icon, color: textoVerde(context), size: 48),
               const SizedBox(height: 16),
               Semantics(
                 header: true,
                 liveRegion: true,
                 child: Text(
                   example.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: canastaGreen,
+                    color: textoVerde(context),
                   ),
                 ),
               ),

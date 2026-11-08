@@ -1,3 +1,5 @@
+import 'tema_app.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -49,10 +51,10 @@ class DemoPage extends StatelessWidget {
             ],
             Text(
               eyebrow.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
                 letterSpacing: 1.2,
-                color: canastaMuted,
+                color: textoSecundario(context),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -61,11 +63,11 @@ class DemoPage extends StatelessWidget {
               header: true,
               child: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 30,
                   height: 1.15,
                   fontWeight: FontWeight.w700,
-                  color: canastaGreen,
+                  color: textoVerde(context),
                 ),
               ),
             ),
@@ -73,7 +75,7 @@ class DemoPage extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 intro!,
-                style: const TextStyle(color: canastaMuted, fontSize: 14),
+                style: TextStyle(color: textoSecundario(context), fontSize: 14),
               ),
             ],
             const SizedBox(height: 22),
@@ -94,14 +96,22 @@ class DemoNotice extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.all(14),
     decoration: BoxDecoration(
-      color: warning ? const Color(0xFFFFF1D9) : canastaSoft,
+      color: warning
+          ? (Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF4A3420)
+                : const Color(0xFFFFF1D9))
+          : suaveApp(context),
       borderRadius: BorderRadius.circular(14),
     ),
     child: Text(
       text,
       style: TextStyle(
         fontSize: 12,
-        color: warning ? const Color(0xFF795B25) : canastaGreen,
+        color: warning
+            ? (Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFFFFE0B5)
+                  : const Color(0xFF795B25))
+            : textoVerde(context),
       ),
     ),
   );
@@ -124,8 +134,8 @@ class DemoAction extends StatelessWidget {
     width: double.infinity,
     child: FilledButton(
       style: FilledButton.styleFrom(
-        backgroundColor: secondary ? canastaSoft : canastaGreen,
-        foregroundColor: secondary ? canastaGreen : Colors.white,
+        backgroundColor: secondary ? suaveApp(context) : canastaGreen,
+        foregroundColor: secondary ? textoVerde(context) : Colors.white,
         minimumSize: const Size(0, 50),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -154,7 +164,7 @@ class DemoCard extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Material(
-      color: Colors.white,
+      color: superficieApp(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
         side: const BorderSide(color: Color(0xFFE2E8DF)),
@@ -288,7 +298,7 @@ class DemoSelect<T> extends StatelessWidget {
     decoration: InputDecoration(
       labelText: label,
       filled: true,
-      fillColor: canastaSoft,
+      fillColor: suaveApp(context),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,

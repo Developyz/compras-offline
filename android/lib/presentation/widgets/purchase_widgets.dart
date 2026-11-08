@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../demo/demo_data.dart';
 import 'demo_widgets.dart';
+import 'tema_app.dart';
 
 class DemoPurchaseTile extends StatelessWidget {
   const DemoPurchaseTile(this.purchase, {super.key});
@@ -21,7 +22,7 @@ class DemoPurchaseTile extends StatelessWidget {
         const SizedBox(height: 5),
         Text(
           '${purchase.shortDate} · ${purchase.lines.length} productos',
-          style: const TextStyle(color: canastaMuted, fontSize: 12),
+          style: TextStyle(color: textoSecundario(context), fontSize: 12),
         ),
         const SizedBox(height: 10),
         DemoMoneyRow(
@@ -50,7 +51,7 @@ class DemoLineTile extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           '${line.quantity} · ${guaranies(line.unitPrice)} ${line.unitLabel}',
-          style: const TextStyle(color: canastaMuted, fontSize: 12),
+          style: TextStyle(color: textoSecundario(context), fontSize: 12),
         ),
         const SizedBox(height: 5),
         Text(

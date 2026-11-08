@@ -1,3 +1,5 @@
+import 'tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../domain/models/compra.dart';
@@ -34,7 +36,7 @@ class DetalleCompraTile extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           '${cantidadDominio(detalle.cantidad)}${unidad == null ? '' : ' $unidad'} × ${guaraniesDominio(detalle.precioUnitario)}',
-          style: const TextStyle(color: canastaMuted, fontSize: 12),
+          style: TextStyle(color: textoSecundario(context), fontSize: 12),
         ),
         const SizedBox(height: 5),
         Text(

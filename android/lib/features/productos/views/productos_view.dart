@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../demo/demo_data.dart';
@@ -41,7 +43,7 @@ class _ProductosViewState extends State<ProductosView> {
             hintText: 'Arroz, leche, manzana…',
             prefixIcon: const Icon(Icons.search),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: superficieApp(context),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             suffixIcon: query.isNotEmpty
                 ? IconButton(
@@ -59,7 +61,7 @@ class _ProductosViewState extends State<ProductosView> {
         const DemoSection('Tu catálogo'),
         Text(
           '${products.length} de ${demoProducts.length} productos de ejemplo',
-          style: const TextStyle(fontSize: 12, color: canastaMuted),
+          style: TextStyle(fontSize: 12, color: textoSecundario(context)),
         ),
         const SizedBox(height: 10),
         if (products.isEmpty)
@@ -79,7 +81,7 @@ class _ProductosViewState extends State<ProductosView> {
                   product.id == 'manzana'
                       ? Icons.eco_outlined
                       : Icons.inventory_2_outlined,
-                  color: canastaGreen,
+                  color: textoVerde(context),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -92,16 +94,19 @@ class _ProductosViewState extends State<ProductosView> {
                 const SizedBox(height: 6),
                 Text(
                   product.presentation,
-                  style: const TextStyle(fontSize: 12, color: canastaMuted),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: textoSecundario(context),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   '${guaranies(product.points.last.price)} ${product.priceUnit}',
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   'Ver evolución de precios →',
-                  style: TextStyle(fontSize: 12, color: canastaGreen),
+                  style: TextStyle(fontSize: 12, color: textoVerde(context)),
                 ),
               ],
             ),

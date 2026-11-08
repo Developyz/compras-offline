@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../demo/demo_data.dart';
@@ -30,9 +32,9 @@ class InicioView extends StatelessWidget {
               'Compra de la semana',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
-            const Text(
+            Text(
               '3 productos · Estimación',
-              style: TextStyle(color: canastaMuted, fontSize: 12),
+              style: TextStyle(color: textoSecundario(context), fontSize: 12),
             ),
             DemoMoneyRow('Total estimado', guaranies(6400), emphasis: true),
           ],

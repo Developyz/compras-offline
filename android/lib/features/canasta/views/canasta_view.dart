@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../demo/demo_data.dart';
@@ -25,9 +27,9 @@ class CanastaView extends StatelessWidget {
       ),
       const SizedBox(height: 18),
       DemoMoneyRow('Total estimado', guaranies(6400), emphasis: true),
-      const Text(
+      Text(
         'PYG · Los precios reales pueden variar.',
-        style: TextStyle(color: canastaMuted, fontSize: 12),
+        style: TextStyle(color: textoSecundario(context), fontSize: 12),
       ),
       const SizedBox(height: 22),
       DemoAction(

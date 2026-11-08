@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../presentation/widgets/demo_widgets.dart';
@@ -28,7 +30,7 @@ class CapturaView extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
             decoration: BoxDecoration(
-              color: const Color(0xFFE6ECE2),
+              color: suaveApp(context),
               borderRadius: BorderRadius.circular(22),
             ),
             child: Center(
@@ -36,12 +38,12 @@ class CapturaView extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 300),
                 child: Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.white,
+                  color: superficieApp(context),
                   child: Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.receipt_long_outlined,
-                        color: canastaGreen,
+                        color: textoVerde(context),
                         size: 42,
                       ),
                       const SizedBox(height: 14),

@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
@@ -46,7 +48,9 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
                 'Frente al registro anterior',
                 percentage,
                 '${difference >= 0 ? 'Subió' : 'Bajó'} ${guaranies(difference.abs())}',
-                color: difference > 0 ? const Color(0xFF975E2B) : canastaGreen,
+                color: difference > 0
+                    ? Theme.of(context).colorScheme.error
+                    : textoVerde(context),
               ),
             ];
             if (constraints.maxWidth < 360 ||
@@ -68,7 +72,7 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
         const DemoSection('Subidas y bajadas'),
         Text(
           'Últimos 30 días · Ejemplo\nPYG · Precio antes de descuentos · ${product.priceUnit}',
-          style: const TextStyle(color: canastaMuted, fontSize: 12),
+          style: TextStyle(color: textoSecundario(context), fontSize: 12),
         ),
         const SizedBox(height: 18),
         DemoCard(
@@ -109,10 +113,10 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'Cada punto es una compra de ejemplo. Las líneas solo unen registros: '
           'no indican el precio real entre esas fechas.',
-          style: TextStyle(color: canastaMuted, fontSize: 12),
+          style: TextStyle(color: textoSecundario(context), fontSize: 12),
         ),
         const DemoSection('Historial del producto'),
         for (final entry in product.points.reversed)
@@ -127,7 +131,10 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
                 const SizedBox(height: 4),
                 Text(
                   entry.store,
-                  style: const TextStyle(color: canastaMuted, fontSize: 12),
+                  style: TextStyle(
+                    color: textoSecundario(context),
+                    fontSize: 12,
+                  ),
                 ),
                 DemoMoneyRow(product.priceUnit, guaranies(entry.price)),
               ],
@@ -201,9 +208,9 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
                       meta: meta,
                       child: Text(
                         points[index].date,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 10,
-                          color: canastaMuted,
+                          color: textoSecundario(context),
                         ),
                       ),
                     );
@@ -217,7 +224,10 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
                   interval: (high - low) / 3,
                   getTitlesWidget: (value, meta) => Text(
                     NumberFormat.decimalPattern('es_PY').format(value.round()),
-                    style: const TextStyle(fontSize: 10, color: canastaMuted),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: textoSecundario(context),
+                    ),
                   ),
                 ),
               ),
@@ -229,17 +239,19 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
                     FlSpot(i.toDouble(), points[i].price.toDouble()),
                 ],
                 isCurved: false,
-                color: canastaGreen,
+                color: textoVerde(context),
                 barWidth: 3,
-                belowBarData: BarAreaData(show: true, color: canastaSoft),
+                belowBarData: BarAreaData(show: true, color: suaveApp(context)),
                 dotData: FlDotData(
                   show: true,
                   getDotPainter: (spot, percent, bar, index) =>
                       FlDotCirclePainter(
                         radius: index == selected ? 6 : 4,
-                        color: index == selected ? canastaLime : Colors.white,
+                        color: index == selected
+                            ? canastaLime
+                            : superficieApp(context),
                         strokeWidth: 2,
-                        strokeColor: canastaGreen,
+                        strokeColor: textoVerde(context),
                       ),
                 ),
               ),
@@ -253,35 +265,33 @@ class _DetalleProductoViewState extends State<DetalleProductoView> {
 }
 
 class _ProductStat extends StatelessWidget {
-  const _ProductStat(
-    this.label,
-    this.value,
-    this.description, {
-    this.color = canastaGreen,
-  });
+  const _ProductStat(this.label, this.value, this.description, {this.color});
   final String label;
   final String value;
   final String description;
-  final Color color;
+  final Color? color;
   @override
   Widget build(BuildContext context) => DemoCard(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: canastaMuted)),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12, color: textoSecundario(context)),
+        ),
         const SizedBox(height: 8),
         Text(
           value,
           style: TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.w700,
-            color: color,
+            color: color ?? textoVerde(context),
           ),
         ),
         const SizedBox(height: 8),
         Text(
           description,
-          style: const TextStyle(fontSize: 12, color: canastaMuted),
+          style: TextStyle(fontSize: 12, color: textoSecundario(context)),
         ),
       ],
     ),

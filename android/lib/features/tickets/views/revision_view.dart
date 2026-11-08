@@ -1,3 +1,5 @@
+import '../../../presentation/widgets/tema_app.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../demo/revision_demo.dart';
@@ -219,7 +221,7 @@ class _RevisionViewState extends State<RevisionView> {
         ],
         if (difference) ...[
           const SizedBox(height: 16),
-          DemoNotice('Revisá el total del ticket.', warning: true),
+          const DemoNotice('Revisá el total del ticket.', warning: true),
           const SizedBox(height: 12),
           if (persistente && viewModel.puedeEditar)
             DemoAction(
@@ -245,13 +247,16 @@ class _RevisionViewState extends State<RevisionView> {
               if (esDemo)
                 Text(
                   'Comercio',
-                  style: TextStyle(fontSize: 12, color: canastaMuted),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: textoSecundario(context),
+                  ),
                 ),
               if (esDemo) const Text('Mercado del Barrio'),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
                 'Fecha · Moneda',
-                style: TextStyle(fontSize: 12, color: canastaMuted),
+                style: TextStyle(fontSize: 12, color: textoSecundario(context)),
               ),
               Text(
                 '${purchase.fechaLocal.valor.split('-').reversed.join('/')} · PYG (guaraníes)',
@@ -303,7 +308,7 @@ class _RevisionViewState extends State<RevisionView> {
             ready
                 ? 'Esta acción no guarda ni envía información.'
                 : 'La confirmación se habilita al resolver las advertencias.',
-            style: const TextStyle(fontSize: 12, color: canastaMuted),
+            style: TextStyle(fontSize: 12, color: textoSecundario(context)),
           ),
       ],
     );
